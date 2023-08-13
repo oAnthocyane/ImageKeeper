@@ -1,0 +1,81 @@
+bot:
+  auth:
+    username: <username bot>
+    token: <token bot>
+  info:
+    localization:
+      ru:
+        infoAboutBot: >- 
+          Привет, я бот Image Keeper!
+        
+        
+          С помощью меня вы можете добавлять новые фотографии, прикрепляя к ним ключевые слова.
+          После этого можно найти ту же фотографию по этим ключевым словам. 
+          Вступайте в группы и сохраняйте фотографии вместе или храните свои личные фотографии,
+          а затем ищите их, просто написав слово!
+
+
+          Вот команды которые я могу выполнить:
+
+        commandStart: "- начало взаимодействия с ботом"
+        commandHelp: "- информация о боте и коммандах"
+        commandChangeLanguage: "<язык (ru/en)> - сменить язык"
+        commandCreateGroup: "<имя группы> <пароль группы> - создать группу"
+        commandLeaveGroup: "<имя группы> - выйти из группы"
+        commandJoinGroup: "<имя группы> - присоединиться к группе"
+        commandGetGroups: "- показать все группы, в которых вы находитесь"
+
+        changeLanguageSuccessful: Смена языка прошла успешна.
+        changeLanguageError: Такого языка не существует.
+
+        yourGroups: "Ваши группы:"
+
+        notAllArguments: >-
+          Были переданы не все аргументы, пожалуйста, повторите попытку с корректным количеством аргументов.
+          Для помощи используйте команду /help.
+        greatCreateGroup: Дання группа была создана.
+        groupExist: Группа с таким именем уже существует.
+        userNotInGroup: Вы не находитесь в данной группе.
+        done: Сделано!
+      en:
+        infoAboutBot: >-
+          Hi, I'm the Image Keeper bot!
+        
+        
+          With my help you can add new photos by attaching keywords to them. 
+          You can then search for the same photo using those keywords. 
+          Join groups and save photos together or store your personal photos
+          and then search for them just by writing a word!
+          
+          
+          Here are the commands I can execute:
+
+        commandStart: "- start interaction with bot"
+        commandHelp: "- information about bot and command"
+        commandChangeLanguage: "<language(en/ru)> - change language"
+        commandCreateGroup: "<name group> <password group> - create group"
+        commandLeaveGroup: "<name group> - leave from group"
+        commandJoinGroup: "<name group> - join to group"
+        commandGetGroups: "- show all the groups you are in"
+
+        changeLanguageSuccessful: The language change was successful.
+        changeLanguageError: There is no such language.
+
+        yourGroups: "Your groups:"
+
+        notAllArguments: >-
+          Not all arguments were passed, please try again with the correct number of arguments.
+          For help, please use the /help command.
+        greatCreateGroup: This group has been created.
+        groupExist: A group by that name already exists.
+        userNotInGroup: You are not in this group.
+        done: Done!
+server:
+  resource:
+    url: http://localhost:8080/api/
+    api:
+      addUser: users/save
+      getGroups: users/{userId}/groups
+      addGroup: groups/save/{userId}
+      leaveGroup: groups/{groupName}/leave/{userId}
+      joinGroup: groups/{groupName}/join/{userId}

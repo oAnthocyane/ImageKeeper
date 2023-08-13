@@ -1,0 +1,30 @@
+package antne.imagekeeper.telegrambot.properties.bot.localization.languages;
+
+abstract public class Language {
+    abstract public String getInfoAboutBot();
+
+    abstract public String getCommandStart();
+    abstract public String getCommandHelp();
+    abstract public String getCommandChangeLanguage();
+    abstract public String getCommandCreateGroup();
+    abstract public String getCommandLeaveGroup();
+
+    abstract public String getCommandJoinGroup();
+
+    abstract public String getCommandGetGroups();
+
+    abstract public String getChangeLanguageSuccessful();
+    abstract public String getChangeLanguageError();
+    abstract public String getYourGroups();
+
+    abstract public String getNotAllArguments();
+
+    abstract public String getGreatCreateGroup();
+
+    abstract public String getGroupExist();
+
+    abstract public String getDone();
+
+    abstract public String getUserNotInGroup();
+
+}
