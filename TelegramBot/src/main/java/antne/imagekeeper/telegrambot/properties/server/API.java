@@ -10,4 +10,6 @@ public class API {
     private String addGroup;
     private String leaveGroup;
     private String joinGroup;
+    private String addImage;
+    private String findByUniqPhrase;
 }

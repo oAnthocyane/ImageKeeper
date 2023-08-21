@@ -9,6 +9,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 public class HelpCommand implements IBotCommand {
@@ -25,6 +26,7 @@ public class HelpCommand implements IBotCommand {
 
     @Override
     public void processMessage(AbsSender absSender, Message message, String[] strings) {
+
         String messageBot = CurrentLanguage.getCurrentLanguage().getInfoAboutBot();
 
         Collection<IBotCommand> registeredCommands = TelegramBot.getInstance().getRegisteredCommands();

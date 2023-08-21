@@ -12,12 +12,18 @@ public class Ru extends Language{
     private String commandLeaveGroup;
     private String commandJoinGroup;
     private String commandGetGroups;
+    private String commandFindByUniqPhrase;
+    private String commandAddGroup;
     private String changeLanguageSuccessful;
     private String changeLanguageError;
+    private String canNotAddImage;
+    private String image;
     private String yourGroups;
     private String notAllArguments;
+    private String onlyOneImageCanAdd;
     private String greatCreateGroup;
     private String groupExist;
+    private String imageNotExist;
     private String done;
     private String userNotInGroup;
 }
