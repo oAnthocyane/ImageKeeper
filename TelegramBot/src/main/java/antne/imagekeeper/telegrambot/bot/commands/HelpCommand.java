@@ -1,6 +1,7 @@
 package antne.imagekeeper.telegrambot.bot.commands;
 
 import antne.imagekeeper.telegrambot.bot.TelegramBot;
+import antne.imagekeeper.telegrambot.bot.commands.communication.MessageSender;
 import antne.imagekeeper.telegrambot.localization.CurrentLanguage;
 import antne.imagekeeper.telegrambot.properties.Config;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.IBotCommand;
@@ -38,11 +39,8 @@ public class HelpCommand implements IBotCommand {
         }
         messageBot += commandsDescription.toString();
 
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(message.getChatId());
-        sendMessage.setText(messageBot);
         try {
-            absSender.execute(sendMessage);
+            MessageSender.sendMessage(absSender, message.getChatId(), messageBot);
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);
         }

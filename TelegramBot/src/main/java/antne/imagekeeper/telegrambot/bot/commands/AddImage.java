@@ -1,6 +1,7 @@
 package antne.imagekeeper.telegrambot.bot.commands;
 
 import antne.imagekeeper.telegrambot.api.ImageAdder;
+import antne.imagekeeper.telegrambot.bot.commands.communication.MessageSender;
 import antne.imagekeeper.telegrambot.utils.FlagParser;
 import antne.imagekeeper.telegrambot.localization.CurrentLanguage;
 import antne.imagekeeper.telegrambot.model.data.ImageInfoDTO;
@@ -46,7 +47,6 @@ public class AddImage implements IBotCommand {
 
             try {
                 byte[] bytePhoto = streamPhoto.readAllBytes();
-                System.out.println(bytePhoto.length);
                 ImageInfoDTO imageInfoDTO = new ImageInfoDTO(uniqPhrase, keysPhrase, message.getFrom().getId(),
                         groupsName, bytePhoto);
 
@@ -64,11 +64,8 @@ public class AddImage implements IBotCommand {
 
 
         }
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(message.getChatId());
-        sendMessage.setText(sendText);
         try {
-            absSender.execute(sendMessage);
+            MessageSender.sendMessage(absSender, message.getChatId(), sendText);
         }catch (TelegramApiException e){
             throw new RuntimeException(e);
         }

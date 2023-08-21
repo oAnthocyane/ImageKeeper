@@ -14,6 +14,9 @@ import antne.imagekeeper.resourceserver.service.group.GroupService;
 import antne.imagekeeper.resourceserver.service.user.UserService;
 import antne.imagekeeper.resourceserver.utils.ImageCreator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -25,6 +28,8 @@ import java.util.Optional;
 
 @Service
 public class ImageInfoServiceImpl implements ImageInfoService{
+
+    private final int MAX_PAGE_REQUEST = 5;
 
     private final UserService userService;
     private final GroupService groupService;
@@ -88,5 +93,23 @@ public class ImageInfoServiceImpl implements ImageInfoService{
         String pathToImage = pathOptional.get();
 
         return googleDriveDownloader.downloadFileBytesFromDrive(pathToImage);
+    }
+
+    @Override
+    public List<byte[]> findByUserAndAnyKeyPhrase(List<String> keysPhrase, long userId) throws IOException {
+        User user = userService.findByUserId(userId);
+        Pageable pageable = PageRequest.of(0, MAX_PAGE_REQUEST);
+        Page<String> imagesPath = imageInfoRepository.findByUserAndAnyKeyPhrase(keysPhrase, user, pageable);
+
+        List<byte[]> photos = new ArrayList<>();
+        List<String> pathImages = imagesPath.getContent();
+        for(String pathImage: pathImages){
+            System.out.println("Path image: " + pathImage);
+            byte[] photo = googleDriveDownloader.downloadFileBytesFromDrive(pathImage);
+            photos.add(photo);
+        }
+
+        return photos;
+
     }
 }

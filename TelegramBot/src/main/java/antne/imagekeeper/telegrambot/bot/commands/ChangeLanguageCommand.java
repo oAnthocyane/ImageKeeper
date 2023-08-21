@@ -1,5 +1,6 @@
 package antne.imagekeeper.telegrambot.bot.commands;
 
+import antne.imagekeeper.telegrambot.bot.commands.communication.MessageSender;
 import antne.imagekeeper.telegrambot.localization.CurrentLanguage;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.IBotCommand;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -20,17 +21,16 @@ public class ChangeLanguageCommand implements IBotCommand {
 
     @Override
     public void processMessage(AbsSender absSender, Message message, String[] arguments) {
-        SendMessage sendMessage = new SendMessage();
         String language = arguments[0];
+        String sendText;
         if(CurrentLanguage.hasCurrentLanguage(language)){
             CurrentLanguage.setCurrentLanguage(language);
-            sendMessage.setText(CurrentLanguage.getCurrentLanguage().getChangeLanguageSuccessful());
+            sendText = CurrentLanguage.getCurrentLanguage().getChangeLanguageSuccessful();
         }else {
-            sendMessage.setText(CurrentLanguage.getCurrentLanguage().getChangeLanguageError());
+            sendText = CurrentLanguage.getCurrentLanguage().getChangeLanguageError();
         }
-        sendMessage.setChatId(message.getChatId());
         try {
-            absSender.execute(sendMessage);
+            MessageSender.sendMessage(absSender, message.getChatId(), sendText);
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);
         }

@@ -13,6 +13,7 @@ public class Ru extends Language{
     private String commandJoinGroup;
     private String commandGetGroups;
     private String commandFindByUniqPhrase;
+    private String commandFindByKeyPhrase;
     private String commandAddGroup;
     private String changeLanguageSuccessful;
     private String changeLanguageError;

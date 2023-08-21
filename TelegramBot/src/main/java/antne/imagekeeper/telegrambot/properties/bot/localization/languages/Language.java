@@ -17,6 +17,7 @@ abstract public class Language {
     abstract public String getChangeLanguageSuccessful();
     abstract public String getChangeLanguageError();
     abstract public String getCommandFindByUniqPhrase();
+    abstract public String getCommandFindByKeyPhrase();
     abstract public String getCanNotAddImage();
 
     abstract public String getImage();

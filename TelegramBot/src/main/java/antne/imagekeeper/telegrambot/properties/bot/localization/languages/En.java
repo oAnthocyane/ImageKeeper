@@ -14,6 +14,7 @@ public class En extends Language{
     private String commandGetGroups;
     private String commandAddGroup;
     private String commandFindByUniqPhrase;
+    private String commandFindByKeyPhrase;
     private String changeLanguageSuccessful;
     private String changeLanguageError;
     private String canNotAddImage;

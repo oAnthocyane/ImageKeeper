@@ -1,6 +1,8 @@
 package antne.imagekeeper.telegrambot.bot.commands.find;
 
 import antne.imagekeeper.telegrambot.api.finder.FinderByUniqPhrase;
+import antne.imagekeeper.telegrambot.bot.commands.communication.MessageSender;
+import antne.imagekeeper.telegrambot.bot.commands.communication.PhotoSender;
 import antne.imagekeeper.telegrambot.localization.CurrentLanguage;
 import antne.imagekeeper.telegrambot.properties.Config;
 import antne.imagekeeper.telegrambot.utils.ImageCreator;
@@ -9,6 +11,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.media.InputMediaPhoto;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -39,12 +42,10 @@ public class FindByUniqPhrase implements IBotCommand {
             FinderByUniqPhrase finder = new FinderByUniqPhrase(uniqPhrase, userId);
             finder.find();
             if(finder.isSuccessfullyResponse()){
+                needSendMessage = false;
                 byte[] photo = finder.getApiResponse().getData();
                 try {
-                    File tempFile = ImageCreator.createTemporaryImageFile(photo, "jpg");
-                    SendPhoto sendPhoto = new SendPhoto(message.getChatId().toString(), new InputFile(tempFile));
-                    needSendMessage = false;
-                    absSender.execute(sendPhoto);
+                    PhotoSender.sendPhoto(absSender, message, photo);
                 } catch (IOException | TelegramApiException e) {
                     throw new RuntimeException(e);
                 }
@@ -54,12 +55,8 @@ public class FindByUniqPhrase implements IBotCommand {
 
         }
         if (needSendMessage){
-            SendMessage sendMessage = new SendMessage();
-            sendMessage.setChatId(message.getChatId());
-            sendMessage.setText(sendText);
-
             try {
-                absSender.execute(sendMessage);
+                MessageSender.sendMessage(absSender, message.getChatId(), sendText);
             }catch (TelegramApiException e){
                 throw new RuntimeException(e);
             }

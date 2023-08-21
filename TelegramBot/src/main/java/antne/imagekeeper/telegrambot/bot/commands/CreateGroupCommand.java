@@ -1,5 +1,6 @@
 package antne.imagekeeper.telegrambot.bot.commands;
 
+import antne.imagekeeper.telegrambot.bot.commands.communication.MessageSender;
 import antne.imagekeeper.telegrambot.localization.CurrentLanguage;
 import antne.imagekeeper.telegrambot.model.Group;
 import antne.imagekeeper.telegrambot.api.GroupAdder;
@@ -44,12 +45,8 @@ public class CreateGroupCommand implements IBotCommand {
             else sendText = CurrentLanguage.getCurrentLanguage().getGroupExist();
         }
 
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(message.getChatId());
-        sendMessage.setText(sendText);
-
         try {
-            absSender.execute(sendMessage);
+            MessageSender.sendMessage(absSender, message.getChatId(), sendText);
         }catch (TelegramApiException e){
             throw new RuntimeException(e);
         }

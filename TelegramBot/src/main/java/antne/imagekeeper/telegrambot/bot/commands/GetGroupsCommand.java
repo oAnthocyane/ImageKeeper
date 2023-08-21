@@ -1,5 +1,6 @@
 package antne.imagekeeper.telegrambot.bot.commands;
 
+import antne.imagekeeper.telegrambot.bot.commands.communication.MessageSender;
 import antne.imagekeeper.telegrambot.localization.CurrentLanguage;
 import antne.imagekeeper.telegrambot.model.Group;
 import antne.imagekeeper.telegrambot.properties.Config;
@@ -38,12 +39,8 @@ public class GetGroupsCommand implements IBotCommand {
             sendText.append("\n").append(group.getName());
         }
 
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(message.getChatId());
-        sendMessage.setText(sendText.toString());
-
         try {
-            absSender.execute(sendMessage);
+            MessageSender.sendMessage(absSender, message.getChatId(), sendText.toString());
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);
         }

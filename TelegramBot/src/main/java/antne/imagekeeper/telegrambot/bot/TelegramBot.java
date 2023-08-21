@@ -1,6 +1,7 @@
 package antne.imagekeeper.telegrambot.bot;
 
 import antne.imagekeeper.telegrambot.bot.commands.*;
+import antne.imagekeeper.telegrambot.bot.commands.find.FindByKeyPhrase;
 import antne.imagekeeper.telegrambot.bot.commands.find.FindByUniqPhrase;
 import antne.imagekeeper.telegrambot.properties.Config;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
@@ -58,6 +59,7 @@ public class TelegramBot extends TelegramLongPollingCommandBot {
         register(new GetGroupsCommand());
         register(new AddImage());
         register(new FindByUniqPhrase());
+        register(new FindByKeyPhrase());
     }
 
     @Override
