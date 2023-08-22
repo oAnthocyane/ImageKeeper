@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-public class FindByKeyPhrasesAndAllGroup implements IBotCommand {
+public class FindByKeyPhrasesAndAllGroups implements IBotCommand {
     @Override
     public String getCommandIdentifier() {
         return "findByKeyPhrasesAndAllGroups";

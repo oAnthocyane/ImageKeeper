@@ -22,6 +22,8 @@ abstract public class Language {
     abstract public String getCommandFindByUniqPhraseAndGroups();
     abstract public String getCommandFindByKeyPhrasesAndGroups();
     abstract public String getCommandFindByKeyPhrasesAndAllGroups();
+    abstract public String getCommandFind();
+    abstract public String getCommandNotExist();
     abstract public String getCanNotAddImage();
 
     abstract public String getImage();

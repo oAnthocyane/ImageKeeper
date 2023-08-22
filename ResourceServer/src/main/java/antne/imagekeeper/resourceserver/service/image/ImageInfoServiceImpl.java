@@ -26,7 +26,7 @@ import java.util.*;
 @Service
 public class ImageInfoServiceImpl implements ImageInfoService{
 
-    private final int MAX_PAGE_REQUEST = 5;
+    private final int MAX_PAGE_REQUEST = 7;
 
         private final Pageable RANGE_CONTENT = PageRequest.of(0, MAX_PAGE_REQUEST);
 

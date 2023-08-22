@@ -1,10 +1,10 @@
 package antne.imagekeeper.telegrambot.bot;
 
+import antne.imagekeeper.telegrambot.api.finder.Find;
 import antne.imagekeeper.telegrambot.bot.commands.*;
 import antne.imagekeeper.telegrambot.bot.commands.find.*;
 import antne.imagekeeper.telegrambot.properties.Config;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
-import org.telegram.telegrambots.extensions.bots.commandbot.commands.IBotCommand;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.GetFile;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -59,10 +59,11 @@ public class TelegramBot extends TelegramLongPollingCommandBot {
         register(new AddImage());
         register(new FindByUniqPhrase());
         register(new FindByKeyPhrase());
-        register(new FindByUniqPhraseAndUserAndAllGroups());
-        register(new FindByUniqPhraseAndUserAndGroup());
-        register(new FindByKeyPhrasesAndGroup());
-        register(new FindByKeyPhrasesAndAllGroup());
+        register(new FindByUniqPhraseAndAllGroups());
+        register(new FindByUniqPhraseAndGroups());
+        register(new FindByKeyPhrasesAndGroups());
+        register(new FindByKeyPhrasesAndAllGroups());
+        register(new Find());
     }
 
     @Override

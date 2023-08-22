@@ -19,6 +19,8 @@ public class Ru extends Language{
     private String commandAddGroup;
     private String commandFindByKeyPhrasesAndGroups;
     private String commandFindByKeyPhrasesAndAllGroups;
+    private String commandFind;
+    private String commandNotExist;
     private String changeLanguageSuccessful;
     private String changeLanguageError;
     private String canNotAddImage;

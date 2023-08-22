@@ -10,8 +10,8 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class HelpCommand implements IBotCommand {
 
@@ -31,9 +31,11 @@ public class HelpCommand implements IBotCommand {
         String messageBot = CurrentLanguage.getCurrentLanguage().getInfoAboutBot();
 
         Collection<IBotCommand> registeredCommands = TelegramBot.getInstance().getRegisteredCommands();
+        List<IBotCommand> commandList = registeredCommands.stream()
+                .sorted(Comparator.comparing(IBotCommand::getCommandIdentifier).reversed()).toList();
         StringBuilder commandsDescription = new StringBuilder();
         commandsDescription.append("\n\n");
-        for (IBotCommand commandBot: registeredCommands) {
+        for (IBotCommand commandBot: commandList) {
             commandsDescription.append("/").append(commandBot.getCommandIdentifier())
                     .append(" ").append(commandBot.getDescription()).append("\n");
         }
