@@ -1,6 +1,7 @@
 package antne.imagekeeper.telegrambot.bot.commands.find;
 
-import antne.imagekeeper.telegrambot.api.finder.FinderByKeyPhrase;
+import antne.imagekeeper.telegrambot.api.finder.FinderByUniqPhraseAndAllGroup;
+import antne.imagekeeper.telegrambot.api.finder.FinderPhotos;
 import antne.imagekeeper.telegrambot.bot.commands.communication.MessageSender;
 import antne.imagekeeper.telegrambot.bot.commands.communication.PhotoManagerSender;
 import antne.imagekeeper.telegrambot.localization.CurrentLanguage;
@@ -11,50 +12,45 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
-public class FindByKeyPhrase implements IBotCommand {
+public class FindByUniqPhraseAndUserAndAllGroups implements IBotCommand {
     @Override
     public String getCommandIdentifier() {
-        return "findByKeyPhrase";
+        return "findByUniqPhraseAndAllGroups";
     }
 
     @Override
     public String getDescription() {
-        return CurrentLanguage.getCurrentLanguage().getCommandFindByKeyPhrase();
+        return CurrentLanguage.getCurrentLanguage().getCommandFindByUniqPhraseAndAllGroups();
     }
 
     @Override
     public void processMessage(AbsSender absSender, Message message, String[] arguments) {
-        if (arguments.length == 0){
+
+        if(arguments.length < 1) {
             String sendText = CurrentLanguage.getCurrentLanguage().getNotAllArguments();
-            try{
+            try {
                 MessageSender.sendMessage(absSender, message.getChatId(), sendText);
-            }catch (TelegramApiException e){
+            } catch (TelegramApiException e) {
                 throw new RuntimeException(e);
             }
         }
-        else {
-            List<String> keyPhrases = Arrays.stream(arguments).toList();
-            Long id = message.getFrom().getId();
-            FinderByKeyPhrase finder = new FinderByKeyPhrase(id);
-            finder.addRequestParams("keysPhrase", keyPhrases);
-            finder.find();
 
+        else {
+            String uniqPhrase = arguments[0];
+            Long id = message.getFrom().getId();
+            FinderPhotos finder = new FinderByUniqPhraseAndAllGroup(id, uniqPhrase);
+            finder.find();
             if(finder.isSuccessfullyResponse()){
                 List<byte[]> bytePhotos = finder.getApiResponse().getData();
-
                 try {
-                    PhotoManagerSender.send(absSender, id, bytePhotos);
-                }catch (TelegramApiException | IOException e) {
+                    PhotoManagerSender.send(absSender, message.getChatId(), bytePhotos);
+                }catch (TelegramApiException | IOException e){
                     throw new RuntimeException(e);
                 }
-            }
-            else log.error("Error http-status: {}", finder.getApiResponse().getHttpStatus());
+            }else log.error("Error http-status: {}", finder.getApiResponse().getHttpStatus());
         }
     }
-
-
 }

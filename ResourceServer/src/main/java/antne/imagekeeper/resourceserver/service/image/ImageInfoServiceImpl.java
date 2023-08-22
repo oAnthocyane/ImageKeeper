@@ -21,15 +21,14 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ImageInfoServiceImpl implements ImageInfoService{
 
     private final int MAX_PAGE_REQUEST = 5;
+
+        private final Pageable RANGE_CONTENT = PageRequest.of(0, MAX_PAGE_REQUEST);
 
     private final UserService userService;
     private final GroupService groupService;
@@ -50,7 +49,8 @@ public class ImageInfoServiceImpl implements ImageInfoService{
     }
     @Override
     public long save(ImageInfoDTO imageInfoDTO) throws IOException {
-        User user = userService.findByUserId(imageInfoDTO.getUserId());
+        long userId = imageInfoDTO.getUserId();
+        User user = userService.findByUserId(userId);
         if(imageInfoRepository.findPathToImageByUniqPhraseAndUser(imageInfoDTO.getUniqPhrase(),
                         user).isPresent())
             throw new ObjectExistException("This image already exist", ModelType.ImageInfo);
@@ -64,6 +64,10 @@ public class ImageInfoServiceImpl implements ImageInfoService{
             // TODO: exception if in this group exist image for this uniqPhrase
             else groupsForImage.add(group);
         }
+
+        String uniqPhrase = imageInfoDTO.getUniqPhrase();
+        if(!findByUniqPhraseAndGroup(uniqPhrase, userId, groups).isEmpty())
+            throw new ObjectExistException("Uniq phrase image was exist in this group", ModelType.ImageInfo);
 
         byte[] imageBytes = imageInfoDTO.getPhoto();
         File imageTemp = ImageCreator.createTemporaryImageFile(imageBytes, "jpg");
@@ -98,18 +102,74 @@ public class ImageInfoServiceImpl implements ImageInfoService{
     @Override
     public List<byte[]> findByUserAndAnyKeyPhrase(List<String> keysPhrase, long userId) throws IOException {
         User user = userService.findByUserId(userId);
-        Pageable pageable = PageRequest.of(0, MAX_PAGE_REQUEST);
-        Page<String> imagesPath = imageInfoRepository.findByUserAndAnyKeyPhrase(keysPhrase, user, pageable);
+        Page<String> imagesPath = imageInfoRepository.findByUserAndAnyKeyPhrase(keysPhrase, user, RANGE_CONTENT);
 
+        return downloadPhotosFromPage(imagesPath);
+
+    }
+
+    @Override
+    public List<byte[]> findByUniqPhraseAndGroup(String uniqPhrase, long userId) throws IOException {
+        User user = userService.findByUserId(userId);
+        List<Group> groups = user.getGroups();
+        Page<String> imagesPath = imageInfoRepository
+                .findByUniqPhraseAndGroupAndUser(uniqPhrase, groups, user, RANGE_CONTENT);
+
+        return downloadPhotosFromPage(imagesPath);
+    }
+
+    @Override
+    public List<byte[]> findByUniqPhraseAndGroup(String uniqPhrase, long userId, List<String> groupNames) throws IOException {
+        User user = userService.findByUserId(userId);
+
+        List<Group> groups = getSelectedGroups(user, groupNames);
+
+        Page<String> imagesPath = imageInfoRepository
+                .findByUniqPhraseAndGroupAndUser(uniqPhrase, groups, user, RANGE_CONTENT);
+
+        return downloadPhotosFromPage(imagesPath);
+    }
+
+    @Override
+    public List<byte[]> findByKeyPhrasesAndGroup(List<String> keyPhrases, long userId) throws IOException {
+        User user = userService.findByUserId(userId);
+        List<Group> groups = user.getGroups();
+        Page<String> imagePath = imageInfoRepository
+                .findByKeysPhraseAndGroupAndUser(keyPhrases, groups, user, RANGE_CONTENT);
+        return downloadPhotosFromPage(imagePath);
+    }
+
+    @Override
+    public List<byte[]> findByKeyPhrasesAndGroup(List<String> keyPhrases, long userId, List<String> groupNames)
+            throws IOException {
+        User user = userService.findByUserId(userId);
+
+        List<Group> selectedGroups = getSelectedGroups(user, groupNames);
+
+        Page<String> imagePaths = imageInfoRepository
+                .findByKeysPhraseAndGroupAndUser(keyPhrases, selectedGroups, user, RANGE_CONTENT);
+        return downloadPhotosFromPage(imagePaths);
+    }
+
+    private List<byte[]> downloadPhotosFromPage(Page<String> imagesPath) throws IOException{
         List<byte[]> photos = new ArrayList<>();
         List<String> pathImages = imagesPath.getContent();
         for(String pathImage: pathImages){
-            System.out.println("Path image: " + pathImage);
             byte[] photo = googleDriveDownloader.downloadFileBytesFromDrive(pathImage);
             photos.add(photo);
         }
 
         return photos;
+    }
 
+    private List<Group> getSelectedGroups(User user, List<String> groupNames){
+        Set<Group> groups = new HashSet<>();
+        for(String groupName : groupNames){
+            groups.add(groupService.findByName(groupName));
+        }
+        Set<Group> userGroups = new HashSet<>(user.getGroups());
+        if(!userGroups.containsAll(groups))
+            throw new ObjectNotFoundException("This group is not exist for this user", ModelType.Group);
+        return groups.stream().toList();
     }
 }

@@ -35,7 +35,7 @@ public interface GroupService {
      * @param user  the user
      * @return the user
      */
-    Group addUserInGroup(Group group, User user);
+    boolean addUserInGroup(Group group, String groupPassword, User user);
 
     /**
      * Remove user in group and return group.

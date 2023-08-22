@@ -25,7 +25,7 @@ public class ImageInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "uniq_phrase", nullable = false, unique = true)
+    @Column(name = "uniq_phrase", nullable = false)
     private String uniqPhrase;
 
     @ElementCollection

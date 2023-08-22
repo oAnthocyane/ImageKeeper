@@ -5,7 +5,6 @@ import antne.imagekeeper.telegrambot.localization.CurrentLanguage;
 import antne.imagekeeper.telegrambot.properties.Config;
 import antne.imagekeeper.telegrambot.api.GroupLeaver;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.IBotCommand;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -49,7 +48,7 @@ public class LeaveGroupCommand implements IBotCommand {
             groupLeaver.refactorGroup();
             if (groupLeaver.isSuccessfullyResponse()) sendText = CurrentLanguage.getCurrentLanguage()
                     .getDone();
-            else sendText = CurrentLanguage.getCurrentLanguage().getUserNotInGroup();
+            else sendText = CurrentLanguage.getCurrentLanguage().getGroupNotExist();
         }
 
         try {

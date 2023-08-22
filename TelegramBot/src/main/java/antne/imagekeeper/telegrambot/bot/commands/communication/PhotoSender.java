@@ -12,9 +12,13 @@ import java.io.IOException;
 
 public class PhotoSender {
 
-    public static void sendPhoto(AbsSender absSender, Message message, byte[] bytePhoto) throws IOException, TelegramApiException {
+    public static void sendPhoto(AbsSender absSender, String chatId, byte[] bytePhoto) throws IOException, TelegramApiException {
         File photo = ImageCreator.createTemporaryImageFile(bytePhoto, "jpg");
-        SendPhoto sendPhoto = new SendPhoto(message.getChatId().toString(), new InputFile(photo));
+        sendPhoto(absSender, chatId, photo);
+    }
+
+    public static void sendPhoto(AbsSender absSender, String chatId, File photo) throws TelegramApiException{
+        SendPhoto sendPhoto = new SendPhoto(chatId, new InputFile(photo));
         absSender.execute(sendPhoto);
     }
 }

@@ -2,7 +2,6 @@ package antne.imagekeeper.telegrambot.bot.commands.communication;
 
 import antne.imagekeeper.telegrambot.utils.ImageCreator;
 import org.telegram.telegrambots.meta.api.methods.send.SendMediaGroup;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.media.InputMedia;
 import org.telegram.telegrambots.meta.api.objects.media.InputMediaPhoto;
 import org.telegram.telegrambots.meta.bots.AbsSender;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MediaGroupSender {
-    public static void sendMediaGroup(AbsSender absSender, Message message, List<byte[]> bytePhotos)
+    public static void sendMediaGroup(AbsSender absSender, long chatId, List<byte[]> bytePhotos)
             throws IOException, TelegramApiException{
         List<InputMedia> inputMediaPhotos = new ArrayList<>();
 
@@ -25,7 +24,7 @@ public class MediaGroupSender {
             inputMediaPhotos.add(inputMediaPhoto);
         }
         SendMediaGroup sendMediaGroup = new SendMediaGroup();
-        sendMediaGroup.setChatId(message.getChatId());
+        sendMediaGroup.setChatId(chatId);
         sendMediaGroup.setMedias(inputMediaPhotos);
         absSender.execute(sendMediaGroup);
 

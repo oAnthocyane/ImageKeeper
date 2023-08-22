@@ -40,7 +40,6 @@ public class User {
     @Column(unique = true, nullable = false)
     private Long userId;
 
-    @NotBlank(message = "Field must not be blank")
     private String username;
 
     @Column(nullable = false)
@@ -73,4 +72,6 @@ public class User {
         groups.remove(group);
         group.getUsers().remove(this);
     }
+
+
 }

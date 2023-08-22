@@ -12,5 +12,9 @@ public class API {
     private String joinGroup;
     private String addImage;
     private String findByUniqPhrase;
+    private String findByUniqPhraseAndUserAndGroups;
+    private String findByUniqPhraseAndUserAndAllGroups;
     private String findByKeyPhrase;
+    private String findByKeyPhrasesAndGroup;
+    private String findByKeyPhrasesAndAllGroup;
 }

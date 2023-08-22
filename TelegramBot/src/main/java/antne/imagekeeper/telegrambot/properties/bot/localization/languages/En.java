@@ -15,6 +15,10 @@ public class En extends Language{
     private String commandAddGroup;
     private String commandFindByUniqPhrase;
     private String commandFindByKeyPhrase;
+    private String commandFindByUniqPhraseAndAllGroups;
+    private String commandFindByUniqPhraseAndGroups;
+    private String commandFindByKeyPhrasesAndGroups;
+    private String commandFindByKeyPhrasesAndAllGroups;
     private String changeLanguageSuccessful;
     private String changeLanguageError;
     private String canNotAddImage;
@@ -26,5 +30,5 @@ public class En extends Language{
     private String onlyOneImageCanAdd;
     private String imageNotExist;
     private String done;
-    private String userNotInGroup;
+    private String groupNotExist;
 }

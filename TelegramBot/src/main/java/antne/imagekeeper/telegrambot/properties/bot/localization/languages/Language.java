@@ -18,6 +18,10 @@ abstract public class Language {
     abstract public String getChangeLanguageError();
     abstract public String getCommandFindByUniqPhrase();
     abstract public String getCommandFindByKeyPhrase();
+    abstract public String getCommandFindByUniqPhraseAndAllGroups();
+    abstract public String getCommandFindByUniqPhraseAndGroups();
+    abstract public String getCommandFindByKeyPhrasesAndGroups();
+    abstract public String getCommandFindByKeyPhrasesAndAllGroups();
     abstract public String getCanNotAddImage();
 
     abstract public String getImage();
@@ -35,6 +39,6 @@ abstract public class Language {
 
     abstract public String getDone();
 
-    abstract public String getUserNotInGroup();
+    abstract public String getGroupNotExist();
 
 }

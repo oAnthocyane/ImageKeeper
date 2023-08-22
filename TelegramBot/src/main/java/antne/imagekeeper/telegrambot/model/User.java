@@ -13,7 +13,6 @@ public class User {
 
     private Long userId;
 
-    @NotBlank(message = "Field must not be blank")
     private String username;
 
     private Long chatId;
@@ -27,4 +26,6 @@ public class User {
     public void removeGroup(Group group){
         groups.remove(group);
     }
+
+
 }

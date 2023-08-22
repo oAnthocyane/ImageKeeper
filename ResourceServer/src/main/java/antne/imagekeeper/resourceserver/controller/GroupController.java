@@ -59,12 +59,13 @@ public class GroupController {
      * @param userId    the user id
      * @return the user
      */
-    @PostMapping("/{groupName}/join/{userId}")
-    public ResponseEntity<Object> joinGroup(@PathVariable String groupName, @PathVariable long userId) {
+    @PostMapping("/{groupName}/{groupPassword}/join/{userId}")
+    public ResponseEntity<Object> joinGroup(@PathVariable String groupName, @PathVariable String groupPassword,
+                                            @PathVariable long userId) {
         User user = userService.findByUserId(userId);
         Group group = groupService.findByName(groupName);
-        Group modifiedGroup = groupService.addUserInGroup(group, user);
-        return ResponseHandler.responseBuilder("User was joined to group", HttpStatus.CREATED, modifiedGroup);
+        boolean isRemoved = groupService.addUserInGroup(group, groupPassword, user);
+        return ResponseHandler.responseBuilder("User was joined to group", HttpStatus.CREATED, isRemoved);
     }
 
     /**

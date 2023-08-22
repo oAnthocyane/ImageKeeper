@@ -14,7 +14,11 @@ public class Ru extends Language{
     private String commandGetGroups;
     private String commandFindByUniqPhrase;
     private String commandFindByKeyPhrase;
+    private String commandFindByUniqPhraseAndAllGroups;
+    private String commandFindByUniqPhraseAndGroups;
     private String commandAddGroup;
+    private String commandFindByKeyPhrasesAndGroups;
+    private String commandFindByKeyPhrasesAndAllGroups;
     private String changeLanguageSuccessful;
     private String changeLanguageError;
     private String canNotAddImage;
@@ -26,5 +30,5 @@ public class Ru extends Language{
     private String groupExist;
     private String imageNotExist;
     private String done;
-    private String userNotInGroup;
+    private String groupNotExist;
 }

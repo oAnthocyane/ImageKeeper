@@ -73,9 +73,12 @@ public class GroupServiceImpl implements GroupService {
      * @return group the group
      */
     @Override
-    public Group addUserInGroup(Group group, User user) {
+    public boolean addUserInGroup(Group group, String groupPassword, User user) {
+        if(!group.getPassword().equals(groupPassword))
+            throw new ObjectNotFoundException("Error password group", ModelType.Group);
         group.addUser(user);
-        return groupRepository.save(group);
+        groupRepository.save(group);
+        return true;
     }
 
     /**
