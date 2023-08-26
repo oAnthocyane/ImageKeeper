@@ -3,15 +3,14 @@ package antne.imagekeeper.telegrambot.bot.commands;
 import antne.imagekeeper.telegrambot.bot.TelegramBot;
 import antne.imagekeeper.telegrambot.bot.commands.communication.MessageSender;
 import antne.imagekeeper.telegrambot.localization.CurrentLanguage;
-import antne.imagekeeper.telegrambot.properties.Config;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.IBotCommand;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 
 public class HelpCommand implements IBotCommand {
 
@@ -35,7 +34,7 @@ public class HelpCommand implements IBotCommand {
                 .sorted(Comparator.comparing(IBotCommand::getCommandIdentifier).reversed()).toList();
         StringBuilder commandsDescription = new StringBuilder();
         commandsDescription.append("\n\n");
-        for (IBotCommand commandBot: commandList) {
+        for (IBotCommand commandBot : commandList) {
             commandsDescription.append("/").append(commandBot.getCommandIdentifier())
                     .append(" ").append(commandBot.getDescription()).append("\n");
         }

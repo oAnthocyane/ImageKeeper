@@ -5,7 +5,7 @@ import antne.imagekeeper.resourceserver.model.ModelType;
 /**
  * The type Object exist exception.
  */
-public class ObjectExistException extends RuntimeException{
+public class ObjectExistException extends RuntimeException {
 
     private final ModelType type;
 
@@ -15,7 +15,7 @@ public class ObjectExistException extends RuntimeException{
      * @param message the message
      * @param type    the type
      */
-    public ObjectExistException(String message, ModelType type){
+    public ObjectExistException(String message, ModelType type) {
         super(message);
         this.type = type;
     }
@@ -27,7 +27,7 @@ public class ObjectExistException extends RuntimeException{
      * @param cause   the cause
      * @param type    the type
      */
-    public ObjectExistException(String message, Throwable cause, ModelType type){
+    public ObjectExistException(String message, Throwable cause, ModelType type) {
         super(message, cause);
         this.type = type;
     }

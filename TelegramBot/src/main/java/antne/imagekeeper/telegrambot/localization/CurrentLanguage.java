@@ -15,12 +15,12 @@ public class CurrentLanguage {
         return currentLanguage;
     }
 
-    public static boolean hasCurrentLanguage(String language){
-        return localization.containsLanguage(language);
-    }
-
     public static void setCurrentLanguage(String language) {
         CurrentLanguage.currentLanguage = localization.getLanguage(language);
+    }
+
+    public static boolean hasCurrentLanguage(String language) {
+        return localization.containsLanguage(language);
     }
 
 

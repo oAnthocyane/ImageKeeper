@@ -1,12 +1,10 @@
 package antne.imagekeeper.telegrambot.bot.commands;
 
+import antne.imagekeeper.telegrambot.api.GetterGroups;
 import antne.imagekeeper.telegrambot.bot.commands.communication.MessageSender;
 import antne.imagekeeper.telegrambot.localization.CurrentLanguage;
 import antne.imagekeeper.telegrambot.model.Group;
-import antne.imagekeeper.telegrambot.properties.Config;
-import antne.imagekeeper.telegrambot.api.GetterGroups;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.IBotCommand;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -35,7 +33,7 @@ public class GetGroupsCommand implements IBotCommand {
         List<Group> groups = getterGroups.getApiResponse().getData();
         StringBuilder sendText = new StringBuilder();
         sendText.append(CurrentLanguage.getCurrentLanguage().getYourGroups());
-        for (Group group: groups) {
+        for (Group group : groups) {
             sendText.append("\n").append(group.getName());
         }
 

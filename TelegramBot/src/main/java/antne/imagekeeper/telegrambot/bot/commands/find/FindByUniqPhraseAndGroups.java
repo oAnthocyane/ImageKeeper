@@ -29,32 +29,32 @@ public class FindByUniqPhraseAndGroups implements IBotCommand {
     public void processMessage(AbsSender absSender, Message message, String[] arguments) {
         String sendText = null;
         boolean needMessage = true;
-        if (arguments.length < 2){
+        if (arguments.length < 2) {
             sendText = CurrentLanguage.getCurrentLanguage().getNotAllArguments();
 
-        }else {
+        } else {
             long id = message.getFrom().getId();
             String uniqPhrase = arguments[0];
             List<String> groupNames = List.of(arguments).subList(1, arguments.length);
             FinderPhotos finder = new FinderByUniqPhraseAndGroup(id, uniqPhrase);
             finder.addRequestParams("groupName", groupNames);
             finder.find();
-            if(finder.isSuccessfullyResponse()){
+            if (finder.isSuccessfullyResponse()) {
                 needMessage = false;
                 List<byte[]> bytePhotos = finder.getApiResponse().getData();
                 try {
                     PhotoManagerSender.send(absSender, message.getChatId(), bytePhotos);
-                }catch (TelegramApiException | IOException e){
+                } catch (TelegramApiException | IOException e) {
                     throw new RuntimeException(e);
                 }
-            }else {
+            } else {
                 sendText = CurrentLanguage.getCurrentLanguage().getCanNotAddImage();
             }
         }
-        if(needMessage) {
+        if (needMessage) {
             try {
                 MessageSender.sendMessage(absSender, message.getChatId(), sendText);
-            }catch (TelegramApiException e){
+            } catch (TelegramApiException e) {
                 throw new RuntimeException(e);
             }
         }

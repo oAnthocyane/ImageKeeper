@@ -13,6 +13,7 @@ import antne.imagekeeper.resourceserver.model.User;
 public interface GroupService {
 
     // TODO: add a password crypt to group.
+
     /**
      * Save group and return id this group.
      *

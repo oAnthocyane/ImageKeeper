@@ -1,12 +1,11 @@
 package antne.imagekeeper.telegrambot.bot.commands;
 
+import antne.imagekeeper.telegrambot.api.GroupAdder;
 import antne.imagekeeper.telegrambot.bot.commands.communication.MessageSender;
 import antne.imagekeeper.telegrambot.localization.CurrentLanguage;
 import antne.imagekeeper.telegrambot.model.Group;
-import antne.imagekeeper.telegrambot.api.GroupAdder;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.IBotCommand;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -28,7 +27,7 @@ public class CreateGroupCommand implements IBotCommand {
     @Override
     public void processMessage(AbsSender absSender, Message message, String[] arguments) {
         String sendText;
-        if(arguments.length < 2)
+        if (arguments.length < 2)
             sendText = CurrentLanguage.getCurrentLanguage().getNotAllArguments();
         else {
             String nameGroup = arguments[0];
@@ -39,15 +38,14 @@ public class CreateGroupCommand implements IBotCommand {
             Long userId = message.getFrom().getId();
             GroupAdder groupAdder = new GroupAdder(userId);
             groupAdder.sendGroup(group);
-            if(groupAdder.isSuccessfullyResponse()) {
+            if (groupAdder.isSuccessfullyResponse()) {
                 sendText = CurrentLanguage.getCurrentLanguage().getGreatCreateGroup();
-            }
-            else sendText = CurrentLanguage.getCurrentLanguage().getGroupExist();
+            } else sendText = CurrentLanguage.getCurrentLanguage().getGroupExist();
         }
 
         try {
             MessageSender.sendMessage(absSender, message.getChatId(), sendText);
-        }catch (TelegramApiException e){
+        } catch (TelegramApiException e) {
             throw new RuntimeException(e);
         }
     }

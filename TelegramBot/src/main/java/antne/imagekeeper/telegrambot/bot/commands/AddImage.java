@@ -2,11 +2,10 @@ package antne.imagekeeper.telegrambot.bot.commands;
 
 import antne.imagekeeper.telegrambot.api.ImageAdder;
 import antne.imagekeeper.telegrambot.bot.commands.communication.MessageSender;
-import antne.imagekeeper.telegrambot.utils.FlagParser;
 import antne.imagekeeper.telegrambot.localization.CurrentLanguage;
 import antne.imagekeeper.telegrambot.model.data.ImageInfoDTO;
+import antne.imagekeeper.telegrambot.utils.FlagParser;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.IBotCommand;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -52,9 +51,9 @@ public class AddImage implements IBotCommand {
 
                 ImageAdder imageAdder = new ImageAdder();
                 imageAdder.sendImage(imageInfoDTO);
-                if(imageAdder.isSuccessfullyResponse())
+                if (imageAdder.isSuccessfullyResponse())
                     sendText = CurrentLanguage.getCurrentLanguage().getDone();
-                else{
+                else {
                     sendText = CurrentLanguage.getCurrentLanguage().getCanNotAddImage();
                 }
             } catch (IOException e) {
@@ -62,11 +61,10 @@ public class AddImage implements IBotCommand {
             }
 
 
-
         }
         try {
             MessageSender.sendMessage(absSender, message.getChatId(), sendText);
-        }catch (TelegramApiException e){
+        } catch (TelegramApiException e) {
             throw new RuntimeException(e);
         }
     }

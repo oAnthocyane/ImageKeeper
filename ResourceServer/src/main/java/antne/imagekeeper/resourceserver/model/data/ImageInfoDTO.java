@@ -1,7 +1,6 @@
 package antne.imagekeeper.resourceserver.model.data;
 
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 

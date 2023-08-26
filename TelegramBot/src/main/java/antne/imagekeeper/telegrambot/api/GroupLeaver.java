@@ -1,7 +1,6 @@
 package antne.imagekeeper.telegrambot.api;
 
 import antne.imagekeeper.telegrambot.api.dataSender.DataPostSender;
-import antne.imagekeeper.telegrambot.model.Group;
 import antne.imagekeeper.telegrambot.properties.Config;
 import org.springframework.core.ParameterizedTypeReference;
 
@@ -11,8 +10,9 @@ public class GroupLeaver extends DataPostSender<Boolean> {
         super(params);
     }
 
-    public void refactorGroup(){
-        ParameterizedTypeReference<ApiResponse<Boolean>> responseType = new ParameterizedTypeReference<>() {};
+    public void refactorGroup() {
+        ParameterizedTypeReference<ApiResponse<Boolean>> responseType = new ParameterizedTypeReference<>() {
+        };
         send(url, responseType);
     }
 

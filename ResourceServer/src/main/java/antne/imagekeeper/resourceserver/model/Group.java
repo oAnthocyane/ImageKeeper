@@ -45,7 +45,7 @@ public class Group {
     private User adminUser;
 
     private String linkToJoin;
-    
+
     @ManyToMany(mappedBy = "groups", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<User> users = new ArrayList<>();

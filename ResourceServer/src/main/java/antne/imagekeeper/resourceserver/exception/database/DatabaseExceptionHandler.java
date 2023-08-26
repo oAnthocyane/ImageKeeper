@@ -19,7 +19,7 @@ public class DatabaseExceptionHandler {
      * @return the response entity
      */
     @ExceptionHandler(value = ObjectNotFoundException.class)
-    public ResponseEntity<Object> handleDatabaseNotFoundException(ObjectNotFoundException objectNotFoundException){
+    public ResponseEntity<Object> handleDatabaseNotFoundException(ObjectNotFoundException objectNotFoundException) {
         DatabaseException databaseException = new DatabaseException(
                 objectNotFoundException.getMessage(),
                 objectNotFoundException.getCause(),
@@ -36,7 +36,7 @@ public class DatabaseExceptionHandler {
      * @return the response entity
      */
     @ExceptionHandler(value = ObjectExistException.class)
-    public ResponseEntity<Object> handleUserExistException(ObjectExistException objectExistException){
+    public ResponseEntity<Object> handleUserExistException(ObjectExistException objectExistException) {
         DatabaseException databaseException = new DatabaseException(
                 objectExistException.getMessage(),
                 objectExistException.getCause(),

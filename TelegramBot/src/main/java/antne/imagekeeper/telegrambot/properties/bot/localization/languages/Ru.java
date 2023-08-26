@@ -3,7 +3,7 @@ package antne.imagekeeper.telegrambot.properties.bot.localization.languages;
 import lombok.Data;
 
 @Data
-public class Ru extends Language{
+public class Ru extends Language {
     private String infoAboutBot;
     private String commandStart;
     private String commandHelp;

@@ -6,10 +6,9 @@ public class Main {
     public static void main(String[] args) {
         try {
             TelegramBot bot = TelegramBot.getInstance();
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             System.err.println(e.getMessage());
         }
-
 
 
     }

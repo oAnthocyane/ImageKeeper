@@ -1,9 +1,9 @@
 package antne.imagekeeper.telegrambot.bot.commands;
 
+import antne.imagekeeper.telegrambot.api.GroupLeaver;
 import antne.imagekeeper.telegrambot.bot.commands.communication.MessageSender;
 import antne.imagekeeper.telegrambot.localization.CurrentLanguage;
 import antne.imagekeeper.telegrambot.properties.Config;
-import antne.imagekeeper.telegrambot.api.GroupLeaver;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.IBotCommand;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.bots.AbsSender;
@@ -16,13 +16,13 @@ public class LeaveGroupCommand implements IBotCommand {
 
     private String url;
 
-    public LeaveGroupCommand(){
+    public LeaveGroupCommand() {
         String urlLeaveGroup = Config.getSettings().getServer().getResource()
                 .getApi().getLeaveGroup();
         url = urlServer + urlLeaveGroup;
     }
 
-    public LeaveGroupCommand(String urlGroup){
+    public LeaveGroupCommand(String urlGroup) {
         url = urlServer + urlGroup;
     }
 
@@ -40,7 +40,7 @@ public class LeaveGroupCommand implements IBotCommand {
     @Override
     public void processMessage(AbsSender absSender, Message message, String[] arguments) {
         String sendText;
-        if(arguments.length < 1) sendText = CurrentLanguage.getCurrentLanguage().getNotAllArguments();
+        if (arguments.length < 1) sendText = CurrentLanguage.getCurrentLanguage().getNotAllArguments();
         else {
             String groupName = arguments[0];
             Long userId = message.getFrom().getId();
@@ -48,7 +48,7 @@ public class LeaveGroupCommand implements IBotCommand {
             groupLeaver.refactorGroup();
             if (groupLeaver.isSuccessfullyResponse()) sendText = CurrentLanguage.getCurrentLanguage()
                     .getDone();
-            else{
+            else {
                 sendText = CurrentLanguage.getCurrentLanguage().getGroupNotExist();
                 System.out.println(groupLeaver.getApiResponse().getHttpStatus());
             }

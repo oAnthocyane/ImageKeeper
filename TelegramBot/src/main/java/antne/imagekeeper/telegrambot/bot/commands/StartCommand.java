@@ -1,9 +1,9 @@
 package antne.imagekeeper.telegrambot.bot.commands;
 
+import antne.imagekeeper.telegrambot.api.UserAdder;
 import antne.imagekeeper.telegrambot.localization.CurrentLanguage;
 import antne.imagekeeper.telegrambot.model.User;
 import antne.imagekeeper.telegrambot.properties.Config;
-import antne.imagekeeper.telegrambot.api.UserAdder;
 import org.telegram.telegrambots.extensions.bots.commandbot.commands.IBotCommand;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.bots.AbsSender;
@@ -21,6 +21,7 @@ public class StartCommand implements IBotCommand {
     public String getCommandIdentifier() {
         return "start";
     }
+
     @Override
     public String getDescription() {
         return CurrentLanguage.getCurrentLanguage().getCommandStart();

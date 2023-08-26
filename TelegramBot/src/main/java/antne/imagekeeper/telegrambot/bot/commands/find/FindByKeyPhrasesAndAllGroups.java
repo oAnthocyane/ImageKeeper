@@ -29,14 +29,14 @@ public class FindByKeyPhrasesAndAllGroups implements IBotCommand {
     public void processMessage(AbsSender absSender, Message message, String[] arguments) {
         boolean needMessage = true;
         String sendText = null;
-        if(arguments.length == 0) sendText = CurrentLanguage.getCurrentLanguage().getNotAllArguments();
+        if (arguments.length == 0) sendText = CurrentLanguage.getCurrentLanguage().getNotAllArguments();
         else {
             long id = message.getFrom().getId();
             FinderPhotos finder = new FinderByKeyPhrasesAndAllGroups(id);
             List<String> keyPhrases = Arrays.stream(arguments).toList();
             finder.addRequestParams("keyPhrases", keyPhrases);
             finder.find();
-            if(finder.isSuccessfullyResponse()){
+            if (finder.isSuccessfullyResponse()) {
                 needMessage = false;
                 List<byte[]> photos = finder.getApiResponse().getData();
                 try {
@@ -44,14 +44,14 @@ public class FindByKeyPhrasesAndAllGroups implements IBotCommand {
                 } catch (IOException | TelegramApiException e) {
                     throw new RuntimeException(e);
                 }
-            }else {
+            } else {
                 sendText = CurrentLanguage.getCurrentLanguage().getImageNotExist();
             }
         }
-        if(needMessage){
+        if (needMessage) {
             try {
                 MessageSender.sendMessage(absSender, message.getChatId(), sendText);
-            }catch (TelegramApiException e){
+            } catch (TelegramApiException e) {
                 throw new RuntimeException(e);
             }
         }

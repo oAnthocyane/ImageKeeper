@@ -2,7 +2,6 @@ package antne.imagekeeper.resourceserver.service.user;
 
 import antne.imagekeeper.resourceserver.model.Group;
 import antne.imagekeeper.resourceserver.model.User;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 

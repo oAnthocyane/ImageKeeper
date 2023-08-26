@@ -24,6 +24,7 @@ public interface ImageInfoRepository extends CrudRepository<ImageInfo, Long> {
     @Query("SELECT i.pathToImage FROM ImageInfo i where i.uniqPhrase = :uniqPhrase " +
             "AND (EXISTS (SELECT k FROM i.groups k WHERE k IN :groups) OR i.user = :user)")
     Page<String> findByUniqPhraseAndGroupAndUser(String uniqPhrase, List<Group> groups, User user, Pageable pageable);
+
     @Query("SELECT i.pathToImage FROM ImageInfo i " +
             "WHERE EXISTS (SELECT kp FROM i.keysPhrase kp WHERE kp IN :keyPhrase) " +
             "AND (EXISTS (SELECT k FROM i.groups k WHERE k IN :groups) OR i.user = :user)")

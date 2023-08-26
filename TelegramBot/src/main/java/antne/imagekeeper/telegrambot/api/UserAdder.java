@@ -11,8 +11,9 @@ public class UserAdder extends DataPostSender<Long> {
         super(params);
     }
 
-    public void sendUser(User user){
-        ParameterizedTypeReference<ApiResponse<Long>> responseType = new ParameterizedTypeReference<>() {};
+    public void sendUser(User user) {
+        ParameterizedTypeReference<ApiResponse<Long>> responseType = new ParameterizedTypeReference<>() {
+        };
         send(user, url, responseType);
     }
 

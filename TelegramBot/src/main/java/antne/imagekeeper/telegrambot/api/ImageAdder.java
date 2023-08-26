@@ -7,10 +7,12 @@ import org.springframework.core.ParameterizedTypeReference;
 
 public class ImageAdder extends DataPostSender<Long> {
 
-    public void sendImage(ImageInfoDTO imageInfoDTO){
-        ParameterizedTypeReference<ApiResponse<Long>> responseType = new ParameterizedTypeReference<>() {};
+    public void sendImage(ImageInfoDTO imageInfoDTO) {
+        ParameterizedTypeReference<ApiResponse<Long>> responseType = new ParameterizedTypeReference<>() {
+        };
         send(imageInfoDTO, url, responseType);
     }
+
     @Override
     public String getCurrentUrl() {
         return Config.getSettings().getServer().getResource().getApi()

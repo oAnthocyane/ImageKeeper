@@ -1,7 +1,5 @@
 package antne.imagekeeper.resourceserver.exception.image;
 
-import java.io.IOException;
-
 public class ImageIOException extends RuntimeException {
     private final String urlImage;
 

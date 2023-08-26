@@ -15,7 +15,7 @@ import java.util.Map;
 public class Find implements IBotCommand {
     @Override
     public String getCommandIdentifier() {
-        return   "find";
+        return "find";
     }
 
     @Override
@@ -28,12 +28,12 @@ public class Find implements IBotCommand {
     public void processMessage(AbsSender absSender, Message message, String[] arguments) {
         boolean needMessage = true;
         String sendText = null;
-        if(arguments.length < 2){
+        if (arguments.length < 2) {
             sendText = CurrentLanguage.getCurrentLanguage().getNotAllArguments();
-        }else {
+        } else {
             String commandFlag = arguments[0];
             Map<String, IBotCommand> findCommands = getFindCommands();
-            if(!findCommands.containsKey(commandFlag))
+            if (!findCommands.containsKey(commandFlag))
                 sendText = CurrentLanguage.getCurrentLanguage().getCommandNotExist();
             else {
                 needMessage = false;
@@ -44,16 +44,16 @@ public class Find implements IBotCommand {
                 foundCommand.processMessage(absSender, message, argumentsForCommand);
             }
         }
-        if (needMessage){
+        if (needMessage) {
             try {
                 MessageSender.sendMessage(absSender, message.getChatId(), sendText);
-            }catch (TelegramApiException e){
+            } catch (TelegramApiException e) {
                 throw new RuntimeException(e);
             }
         }
     }
 
-    private Map<String, IBotCommand> getFindCommands(){
+    private Map<String, IBotCommand> getFindCommands() {
         Map<String, IBotCommand> findCommands = new HashMap<>();
 
         findCommands.put("-u", new FindByUniqPhrase());

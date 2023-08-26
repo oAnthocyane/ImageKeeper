@@ -29,28 +29,26 @@ public class FindByUniqPhraseAndAllGroups implements IBotCommand {
     @Override
     public void processMessage(AbsSender absSender, Message message, String[] arguments) {
 
-        if(arguments.length < 1) {
+        if (arguments.length < 1) {
             String sendText = CurrentLanguage.getCurrentLanguage().getNotAllArguments();
             try {
                 MessageSender.sendMessage(absSender, message.getChatId(), sendText);
             } catch (TelegramApiException e) {
                 throw new RuntimeException(e);
             }
-        }
-
-        else {
+        } else {
             String uniqPhrase = arguments[0];
             Long id = message.getFrom().getId();
             FinderPhotos finder = new FinderByUniqPhraseAndAllGroup(id, uniqPhrase);
             finder.find();
-            if(finder.isSuccessfullyResponse()){
+            if (finder.isSuccessfullyResponse()) {
                 List<byte[]> bytePhotos = finder.getApiResponse().getData();
                 try {
                     PhotoManagerSender.send(absSender, message.getChatId(), bytePhotos);
-                }catch (TelegramApiException | IOException e){
+                } catch (TelegramApiException | IOException e) {
                     throw new RuntimeException(e);
                 }
-            }else log.error("Error http-status: {}", finder.getApiResponse().getHttpStatus());
+            }
         }
     }
 }

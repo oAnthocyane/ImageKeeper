@@ -1,9 +1,7 @@
 package antne.imagekeeper.resourceserver.google.drive.api;
 
-import com.google.api.client.googleapis.media.MediaHttpDownloader;
-import com.google.api.client.http.GenericUrl;
 import com.google.api.services.drive.Drive;
-import com.google.api.services.drive.model.File;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @Component
+@Slf4j
 public class GoogleDriveDownloader {
 
     private final Drive driveService;
@@ -29,6 +28,7 @@ public class GoogleDriveDownloader {
             while ((bytesRead = inputStream.read(buffer)) != -1) {
                 outputStream.write(buffer, 0, bytesRead);
             }
+            log.info("Successfully download image {}", fileId);
         }
 
         return outputStream.toByteArray();

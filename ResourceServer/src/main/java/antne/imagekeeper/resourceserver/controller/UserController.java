@@ -52,7 +52,7 @@ public class UserController {
      * @return ResponseEntity со списком групп.
      */
     @GetMapping("/{userId}/groups")
-    public ResponseEntity<Object> getGroups(@PathVariable long userId){
+    public ResponseEntity<Object> getGroups(@PathVariable long userId) {
         List<Group> groups = userService.findGroupsByUserId(userId);
         return ResponseHandler.responseBuilder("Groups was returned", HttpStatus.OK, groups);
     }

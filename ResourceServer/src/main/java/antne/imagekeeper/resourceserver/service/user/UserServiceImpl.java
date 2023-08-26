@@ -6,6 +6,7 @@ import antne.imagekeeper.resourceserver.model.Group;
 import antne.imagekeeper.resourceserver.model.ModelType;
 import antne.imagekeeper.resourceserver.model.User;
 import antne.imagekeeper.resourceserver.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.Optional;
  * The type User service.
  */
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -38,14 +40,18 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public long save(User user) {
+        log.info("Saving user: {}", user.getUsername());
         Optional<User> userInDB = userRepository.findByUserId(user.getUserId());
-        if(userInDB.isPresent()) throw new ObjectExistException("User is exist", ModelType.User);
+        if (userInDB.isPresent()) {
+            log.error("User already exists: {}", user.getUsername());
+            throw new ObjectExistException("User is exist", ModelType.User);
+        }
         return userRepository.save(user).getId();
     }
 
     /**
      * Method to find user. Not safe as the given id may not exist.
-     *
+     * <p>
      * If does not exist thrown ObjectNotFoundException.
      *
      * @param userId the userId
@@ -54,11 +60,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByUserId(long userId) {
+        log.info("Finding user by userId: {}", userId);
         return checkOnExist(userRepository.findByUserId(userId));
     }
 
     /**
-     *
      * Method to leave user from group. Safe method.
      *
      * @param user  the user
@@ -67,12 +73,12 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User leaveGroup(User user, Group group) {
+        log.info("Leaving user {} from group: {}", user.getUsername(), group.getName());
         user.removeGroup(group);
         return userRepository.save(user);
     }
 
     /**
-     *
      * Method join user to group. Safe method.
      *
      * @param user  the user
@@ -81,6 +87,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User joinToGroup(User user, Group group) {
+        log.info("Joining user {} to group: {}", user.getUsername(), group.getName());
         user.addGroup(group);
         return userRepository.save(user);
     }
@@ -94,12 +101,15 @@ public class UserServiceImpl implements UserService {
     /**
      * Method on check exist in DB.
      *
-     * @param Optional<Data> object the safety data object.
+     * @param Optional<User> object the safety data object.
      * @return Data object
      */
-    private <Data> Data checkOnExist(Optional<Data> object){
-        if(object.isEmpty()) throw new ObjectNotFoundException("User does not exist", ModelType.User);
-        return object.get();
+    private User checkOnExist(Optional<User> user) {
+        if (user.isEmpty()) {
+            log.error("User does not exist");
+            throw new ObjectNotFoundException("User does not exist", ModelType.User);
+        }
+        return user.get();
     }
 
 }

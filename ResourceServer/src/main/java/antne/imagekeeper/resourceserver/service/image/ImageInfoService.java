@@ -1,7 +1,6 @@
 package antne.imagekeeper.resourceserver.service.image;
 
 
-import antne.imagekeeper.resourceserver.model.Group;
 import antne.imagekeeper.resourceserver.model.data.ImageInfoDTO;
 
 import java.io.IOException;
@@ -15,9 +14,11 @@ public interface ImageInfoService {
     List<byte[]> findByUserAndAnyKeyPhrase(List<String> keysPhrases, long userId) throws IOException;
 
     List<byte[]> findByUniqPhraseAndGroup(String uniqPhrase, long userId) throws IOException;
+
     List<byte[]> findByUniqPhraseAndGroup(String uniqPhrase, long userId, List<String> groupNames) throws IOException;
 
     List<byte[]> findByKeyPhrasesAndGroup(List<String> keyPhrases, long userId) throws IOException;
+
     List<byte[]> findByKeyPhrasesAndGroup(List<String> keyPhrases, long userId, List<String> groupNames)
             throws IOException;
 }

@@ -2,7 +2,7 @@ package antne.imagekeeper.telegrambot.api;
 
 import antne.imagekeeper.telegrambot.properties.Config;
 
-public class GroupJoiner extends GroupLeaver{
+public class GroupJoiner extends GroupLeaver {
 
     public GroupJoiner(Object... params) {
         super(params);

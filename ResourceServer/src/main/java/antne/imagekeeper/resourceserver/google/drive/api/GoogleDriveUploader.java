@@ -4,16 +4,17 @@ import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 
 @Component
+@Slf4j
 public class GoogleDriveUploader {
 
     private final Drive driveService;
@@ -38,7 +39,9 @@ public class GoogleDriveUploader {
         File uploadedFile = driveService.files().create(fileMetadata, mediaContent)
                 .setFields("id")
                 .execute();
-        return uploadedFile.getId();
+        String fileId = uploadedFile.getId();
+        log.info("Successfully upload a file with uniqName: {} and with id: {}", uniqName, fileId);
+        return fileId;
     }
 
     public String createFolder(String folderName) throws IOException {
@@ -47,12 +50,13 @@ public class GoogleDriveUploader {
         folderMetadata.setMimeType("application/vnd.google-apps.folder");
 
         if (parentFolderId != null) {
-            System.out.println("parentFolderId != null");
             folderMetadata.setParents(Collections.singletonList(parentFolderId));
-        }else System.out.println("parentFolderId = null");
+        }
 
         File folder = driveService.files().create(folderMetadata).execute();
-        return folder.getId();
+        String folderId = folder.getId();
+        log.info("Successfully create a new folder with id: {}", folderId);
+        return folderId;
     }
 
     public List<File> searchFoldersByName(String folderName) throws IOException {
@@ -67,10 +71,10 @@ public class GoogleDriveUploader {
         return result.getFiles();
     }
 
-    public String getFolderIdByName(String folderName) throws IOException{
+    public String getFolderIdByName(String folderName) throws IOException {
         List<File> folderIds = searchFoldersByName(folderName);
         String folderId;
-        if(folderIds.isEmpty()) folderId = createFolder(folderName);
+        if (folderIds.isEmpty()) folderId = createFolder(folderName);
         else folderId = folderIds.get(0).getId();
         return folderId;
     }

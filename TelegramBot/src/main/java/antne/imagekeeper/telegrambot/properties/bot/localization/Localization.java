@@ -17,17 +17,17 @@ public class Localization {
 
     private Map<String, Language> languages;
 
-    public void init(){
+    public void init() {
         languages = new HashMap<>();
         languages.put("ru", ru);
         languages.put("en", en);
     }
 
-    public Language getLanguage(String language){
+    public Language getLanguage(String language) {
         return languages.get(language);
     }
 
-    public boolean containsLanguage(String language){
+    public boolean containsLanguage(String language) {
         return languages.containsKey(language);
     }
 }

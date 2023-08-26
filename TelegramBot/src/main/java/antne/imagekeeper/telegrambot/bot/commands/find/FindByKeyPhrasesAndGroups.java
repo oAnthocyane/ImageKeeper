@@ -1,7 +1,7 @@
 package antne.imagekeeper.telegrambot.bot.commands.find;
 
-import antne.imagekeeper.telegrambot.api.finder.finderByKeyPhraseAndGroups;
 import antne.imagekeeper.telegrambot.api.finder.FinderPhotos;
+import antne.imagekeeper.telegrambot.api.finder.finderByKeyPhraseAndGroups;
 import antne.imagekeeper.telegrambot.bot.commands.communication.MessageSender;
 import antne.imagekeeper.telegrambot.bot.commands.communication.PhotoManagerSender;
 import antne.imagekeeper.telegrambot.localization.CurrentLanguage;
@@ -30,10 +30,10 @@ public class FindByKeyPhrasesAndGroups implements IBotCommand {
     public void processMessage(AbsSender absSender, Message message, String[] arguments) {
         boolean needMessage = true;
         String sendText = null;
-        if(arguments.length < 2) sendText = CurrentLanguage.getCurrentLanguage().getNotAllArguments();
+        if (arguments.length < 2) sendText = CurrentLanguage.getCurrentLanguage().getNotAllArguments();
         else {
             Map<String, List<String>> flagKeys = FlagParser.parse(arguments);
-            if(!flagKeys.containsKey("-k") || !flagKeys.containsKey("-g"))
+            if (!flagKeys.containsKey("-k") || !flagKeys.containsKey("-g"))
                 sendText = CurrentLanguage.getCurrentLanguage().getNotAllArguments();
             else {
                 long id = message.getFrom().getId();
@@ -45,7 +45,7 @@ public class FindByKeyPhrasesAndGroups implements IBotCommand {
                 finder.addRequestParams("groupName", groupNames);
                 finder.addRequestParams("keyPhrases", keyPhrases);
                 finder.find();
-                if(finder.isSuccessfullyResponse()){
+                if (finder.isSuccessfullyResponse()) {
                     needMessage = false;
                     List<byte[]> photos = finder.getApiResponse().getData();
                     try {
@@ -53,13 +53,13 @@ public class FindByKeyPhrasesAndGroups implements IBotCommand {
                     } catch (IOException | TelegramApiException e) {
                         throw new RuntimeException(e);
                     }
-                }else sendText = CurrentLanguage.getCurrentLanguage().getImageNotExist();
+                } else sendText = CurrentLanguage.getCurrentLanguage().getImageNotExist();
             }
         }
-        if(needMessage){
+        if (needMessage) {
             try {
                 MessageSender.sendMessage(absSender, message.getChatId(), sendText);
-            }catch (TelegramApiException e){
+            } catch (TelegramApiException e) {
                 throw new RuntimeException(e);
             }
         }

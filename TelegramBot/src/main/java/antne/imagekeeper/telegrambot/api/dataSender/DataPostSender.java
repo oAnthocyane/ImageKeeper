@@ -12,9 +12,9 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 @Slf4j
-abstract public class DataPostSender<Returned> extends DataSender<Returned>{
+abstract public class DataPostSender<Returned> extends DataSender<Returned> {
 
-    public DataPostSender(Object... params){
+    public DataPostSender(Object... params) {
         super(params);
     }
 
@@ -22,13 +22,12 @@ abstract public class DataPostSender<Returned> extends DataSender<Returned>{
         send(data, url, responseType, CONST_TIMEOUT);
     }
 
-    protected void send(String url, ParameterizedTypeReference<ApiResponse<Returned>>responseType){
+    protected void send(String url, ParameterizedTypeReference<ApiResponse<Returned>> responseType) {
         send(null, url, responseType, CONST_TIMEOUT);
     }
 
 
     protected <Sent> void send(Sent data, String url, ParameterizedTypeReference<ApiResponse<Returned>> responseType, int timeout) {
-        log.info("Send POST-request to: {}", url);
         HttpEntity<Sent> request = buildHttpEntity(data);
 
         RestTemplate restTemplate = buildRestTemplate(timeout);
@@ -38,13 +37,15 @@ abstract public class DataPostSender<Returned> extends DataSender<Returned>{
                     url, HttpMethod.POST, request, responseType
             );
             apiResponse = responseEntity.getBody();
-        }catch (HttpClientErrorException serverError){
+            log.info("Successfully POST-request to: {}", url);
+        } catch (HttpClientErrorException serverError) {
             HttpStatus httpStatus = serverError.getStatusCode();
             String errorMessage = serverError.getResponseBodyAsString();
             apiResponse.setHttpStatus(httpStatus);
             apiResponse.setMessage(errorMessage);
-        }
-        catch (ResourceAccessException e){
+            log.error("Error POST-request to: {} with status: {} and error: {}", url, httpStatus, errorMessage);
+        } catch (ResourceAccessException e) {
+            log.error("Timeout exceeded {} with POST-request to: {}", e.getMessage(), url);
             throw new RestRequestFailedException("Timeout exceeded: " + e.getMessage(), e);
         }
     }

@@ -13,6 +13,7 @@ import antne.imagekeeper.resourceserver.repository.ImageInfoRepository;
 import antne.imagekeeper.resourceserver.service.group.GroupService;
 import antne.imagekeeper.resourceserver.service.user.UserService;
 import antne.imagekeeper.resourceserver.utils.ImageCreator;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,7 +25,8 @@ import java.io.IOException;
 import java.util.*;
 
 @Service
-public class ImageInfoServiceImpl implements ImageInfoService{
+@Slf4j
+public class ImageInfoServiceImpl implements ImageInfoService {
 
     private final int MAX_PAGE_REQUEST = 7;
 
@@ -47,26 +49,26 @@ public class ImageInfoServiceImpl implements ImageInfoService{
         this.googleDriveUploader = googleDriveUploader;
         this.imageInfoRepository = imageInfoRepository;
     }
+
     @Override
     public long save(ImageInfoDTO imageInfoDTO) throws IOException {
+        log.info("Saving image info for user: {}", imageInfoDTO.getUserId());
         long userId = imageInfoDTO.getUserId();
         User user = userService.findByUserId(userId);
-        if(imageInfoRepository.findPathToImageByUniqPhraseAndUser(imageInfoDTO.getUniqPhrase(),
-                        user).isPresent())
+        if (imageInfoRepository.findPathToImageByUniqPhraseAndUser(imageInfoDTO.getUniqPhrase(),
+                user).isPresent()) {
+            log.error("Image with unique phrase already exists: {}", imageInfoDTO.getUniqPhrase());
             throw new ObjectExistException("This image already exist", ModelType.ImageInfo);
-
-        List<Group> groupsForImage = new ArrayList<>();
-        List<String> groups = imageInfoDTO.getGroupsName();
-        for (String groupName : groups){
-            Group group = groupService.findByName(groupName);
-            if(!group.getUsers().contains(user)) throw new ObjectNotFoundException("This group is not found",
-                    ModelType.Group);
-            else groupsForImage.add(group);
         }
 
+        List<String> groups = imageInfoDTO.getGroupsName();
+        List<Group> groupsForImage = getSelectedGroups(user, groups);
+
         String uniqPhrase = imageInfoDTO.getUniqPhrase();
-        if(!findByUniqPhraseAndGroup(uniqPhrase, userId, groups).isEmpty())
+        if (!findByUniqPhraseAndGroup(uniqPhrase, userId, groups).isEmpty()) {
+            log.error("Unique phrase image already exists in this group: {}", uniqPhrase);
             throw new ObjectExistException("Uniq phrase image was exist in this group", ModelType.ImageInfo);
+        }
 
         byte[] imageBytes = imageInfoDTO.getPhoto();
         File imageTemp = ImageCreator.createTemporaryImageFile(imageBytes, "jpg");
@@ -82,16 +84,17 @@ public class ImageInfoServiceImpl implements ImageInfoService{
 
         long id = imageInfoRepository.save(imageInfo).getId();
 
-        if(imageTemp.exists()) imageTemp.delete();
+        if (imageTemp.exists()) imageTemp.delete();
 
+        log.info("Image info saved successfully with id: {}", id);
         return id;
     }
 
     @Override
-    public byte[] findByUniqPhraseAndUser(String uniqPhrase, long userId) throws IOException{
+    public byte[] findByUniqPhraseAndUser(String uniqPhrase, long userId) throws IOException {
         Optional<String> pathOptional = imageInfoRepository
                 .findPathToImageByUniqPhraseAndUser(uniqPhrase, userService.findByUserId(userId));
-        if(pathOptional.isEmpty()) throw new ObjectNotFoundException("This image not exist", ModelType.ImageInfo);
+        if (pathOptional.isEmpty()) throw new ObjectNotFoundException("This image not exist", ModelType.ImageInfo);
 
         String pathToImage = pathOptional.get();
 
@@ -150,10 +153,10 @@ public class ImageInfoServiceImpl implements ImageInfoService{
         return downloadPhotosFromPage(imagePaths);
     }
 
-    private List<byte[]> downloadPhotosFromPage(Page<String> imagesPath) throws IOException{
+    private List<byte[]> downloadPhotosFromPage(Page<String> imagesPath) throws IOException {
         List<byte[]> photos = new ArrayList<>();
         List<String> pathImages = imagesPath.getContent();
-        for(String pathImage: pathImages){
+        for (String pathImage : pathImages) {
             byte[] photo = googleDriveDownloader.downloadFileBytesFromDrive(pathImage);
             photos.add(photo);
         }
@@ -161,14 +164,16 @@ public class ImageInfoServiceImpl implements ImageInfoService{
         return photos;
     }
 
-    private List<Group> getSelectedGroups(User user, List<String> groupNames){
+    private List<Group> getSelectedGroups(User user, List<String> groupNames) {
         Set<Group> groups = new HashSet<>();
-        for(String groupName : groupNames){
+        for (String groupName : groupNames) {
             groups.add(groupService.findByName(groupName));
         }
         Set<Group> userGroups = new HashSet<>(user.getGroups());
-        if(!userGroups.containsAll(groups))
+        if (!userGroups.containsAll(groups)) {
+            log.error("Selected groups do not exist for user: {}", user.getUsername());
             throw new ObjectNotFoundException("This group is not exist for this user", ModelType.Group);
+        }
         return groups.stream().toList();
     }
 }

@@ -4,7 +4,7 @@ import antne.imagekeeper.telegrambot.properties.Config;
 
 
 public class FinderByKeyPhrase extends FinderPhotos {
-    public FinderByKeyPhrase(Object... params){
+    public FinderByKeyPhrase(Object... params) {
         super(params);
     }
 

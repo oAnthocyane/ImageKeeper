@@ -3,10 +3,8 @@ package antne.imagekeeper.telegrambot.api;
 import antne.imagekeeper.telegrambot.api.dataSender.DataGetSender;
 import antne.imagekeeper.telegrambot.model.Group;
 import antne.imagekeeper.telegrambot.properties.Config;
-import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.core.ParameterizedTypeReference;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GetterGroups extends DataGetSender<List<Group>> {
@@ -16,8 +14,9 @@ public class GetterGroups extends DataGetSender<List<Group>> {
     }
 
 
-    public void sendRequest(){
-        ParameterizedTypeReference<ApiResponse<List<Group>>> responseType = new ParameterizedTypeReference<>() {};
+    public void sendRequest() {
+        ParameterizedTypeReference<ApiResponse<List<Group>>> responseType = new ParameterizedTypeReference<>() {
+        };
         send(url, responseType);
     }
 

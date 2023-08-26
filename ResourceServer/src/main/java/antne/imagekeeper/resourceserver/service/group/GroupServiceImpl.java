@@ -32,7 +32,7 @@ public class GroupServiceImpl implements GroupService {
 
     /**
      * Method to find group by id. Not safe as the given group may not exist.
-     *
+     * <p>
      * Thrown ObjectNotFoundException.
      *
      * @param id the id group
@@ -40,6 +40,7 @@ public class GroupServiceImpl implements GroupService {
      */
     @Override
     public Group findById(long id) {
+        log.info("Finding group by id: {}", id);
         return checkOnExist(groupRepository.findById(id));
     }
 
@@ -53,7 +54,7 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public long save(Group group, User user) {
         log.info("Saving group: {}", group.getName());
-        if(groupRepository.findByName(group.getName()).isPresent()) {
+        if (groupRepository.findByName(group.getName()).isPresent()) {
             log.error("Group already exists: {}", group.getName());
             throw new ObjectExistException(
                     "Group is exist",
@@ -74,7 +75,7 @@ public class GroupServiceImpl implements GroupService {
      */
     @Override
     public boolean addUserInGroup(Group group, String groupPassword, User user) {
-        if(!group.getPassword().equals(groupPassword))
+        if (!group.getPassword().equals(groupPassword))
             throw new ObjectNotFoundException("Error password group", ModelType.Group);
         group.addUser(user);
         groupRepository.save(group);
@@ -92,11 +93,10 @@ public class GroupServiceImpl implements GroupService {
     public boolean removeUserInGroup(Group group, User user) {
         log.info("Removing user {} from group: {}", user.getUsername(), group.getName());
         group.removeUser(user);
-        if(group.getUsers().size() == 0) {
+        if (group.getUsers().size() == 0) {
             groupRepository.delete(group);
             log.info("Group was deleted as it became empty: {}", group.getName());
-        }
-        else{
+        } else {
             groupRepository.save(group);
             log.info("Group was updated after removing user: {}", group.getName());
         }
@@ -105,14 +105,15 @@ public class GroupServiceImpl implements GroupService {
 
     /**
      * Method to find group. Not safe as the given group may not exist.
-     *
+     * <p>
      * Thrown ObjectNotFoundException.
      *
      * @param name the name group
      * @return group the group
      */
     @Override
-    public Group findByName(String name){
+    public Group findByName(String name) {
+        log.info("Finding group by name: {}", name);
         return checkOnExist(groupRepository.findByName(name));
     }
 
@@ -122,8 +123,11 @@ public class GroupServiceImpl implements GroupService {
      * @param Optional<Group> group the safety group object.
      * @return User user
      */
-    private Group checkOnExist(Optional<Group> group){
-        if(group.isEmpty()) throw new ObjectNotFoundException("Group does not exist", ModelType.Group);
+    private Group checkOnExist(Optional<Group> group) {
+        if (group.isEmpty()) {
+            log.error("Group does not exist");
+            throw new ObjectNotFoundException("Group does not exist", ModelType.Group);
+        }
         return group.get();
     }
 }

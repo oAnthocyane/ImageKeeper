@@ -23,7 +23,7 @@ public class JoinGroupCommand implements IBotCommand {
     @Override
     public void processMessage(AbsSender absSender, Message message, String[] arguments) {
         String sendText;
-        if(arguments.length < 2) sendText = CurrentLanguage.getCurrentLanguage().getNotAllArguments();
+        if (arguments.length < 2) sendText = CurrentLanguage.getCurrentLanguage().getNotAllArguments();
         else {
             String groupName = arguments[0];
             String groupPassword = arguments[1];

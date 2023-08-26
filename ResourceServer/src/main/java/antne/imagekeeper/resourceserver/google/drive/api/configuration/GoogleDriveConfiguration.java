@@ -27,7 +27,7 @@ public class GoogleDriveConfiguration {
     private String CREDENTIALS_PATH;
 
     @Bean
-    public Drive driveService(){
+    public Drive driveService() {
         final InputStream SERVICE_ACCOUNT_JSON_PATH = getClass().getResourceAsStream(CREDENTIALS_PATH);
         try {
             GoogleCredentials credentials = ServiceAccountCredentials.fromStream(SERVICE_ACCOUNT_JSON_PATH)
@@ -38,9 +38,9 @@ public class GoogleDriveConfiguration {
                     new HttpCredentialsAdapter(credentials))
                     .setApplicationName(APPLICATION_NAME)
                     .build();
-        }catch (IOException ioException){
-          log.error("Not found CREDENTIALS_PATH in resource path", ioException);
-          return null;
+        } catch (IOException ioException) {
+            log.error("Not found CREDENTIALS_PATH in resource path", ioException);
+            return null;
         }
     }
 

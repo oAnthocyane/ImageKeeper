@@ -32,11 +32,12 @@ public class TelegramBot extends TelegramLongPollingCommandBot {
         }
     }
 
-    private TelegramBot(){
+    private TelegramBot() {
         super();
     }
-    public static TelegramBot getInstance(){
-        if(instance == null) instance = new TelegramBot();
+
+    public static TelegramBot getInstance() {
+        if (instance == null) instance = new TelegramBot();
         return instance;
     }
 
@@ -68,7 +69,7 @@ public class TelegramBot extends TelegramLongPollingCommandBot {
 
     @Override
     public void processNonCommandUpdate(Update update) {
-        if(update.hasMessage() && update.getMessage().hasPhoto()
+        if (update.hasMessage() && update.getMessage().hasPhoto()
                 && update.getMessage().getCaption() != null) {
             Message message = update.getMessage();
             List<PhotoSize> photos = message.getPhoto();
@@ -101,7 +102,6 @@ public class TelegramBot extends TelegramLongPollingCommandBot {
             }
         }
     }
-
 
 
     @Override

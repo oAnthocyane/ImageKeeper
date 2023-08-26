@@ -24,26 +24,26 @@ public class SecurityConfig {
     private String password;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
-                authorizationManagerRequestMatcherRegistry.requestMatchers("/api/**").authenticated()
-                        .anyRequest().permitAll()).httpBasic(Customizer.withDefaults());
+                        authorizationManagerRequestMatcherRegistry.requestMatchers("/api/**").authenticated()
+                                .anyRequest().permitAll()).httpBasic(Customizer.withDefaults());
         return httpSecurity.build();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public UserDetailsService userDetailsService(){
+    public UserDetailsService userDetailsService() {
         return new InMemoryUserDetailsManager(
-            User.builder()
-                    .username(username)
-                    .password(passwordEncoder().encode(password))
-                    .build()
+                User.builder()
+                        .username(username)
+                        .password(passwordEncoder().encode(password))
+                        .build()
         );
     }
 }

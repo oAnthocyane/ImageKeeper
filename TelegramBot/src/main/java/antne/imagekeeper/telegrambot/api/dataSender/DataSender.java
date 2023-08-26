@@ -8,33 +8,30 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClients;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.web.client.*;
-
+import org.springframework.web.client.RestTemplate;
 
 abstract public class DataSender<Returned> {
 
-    protected ApiResponse<Returned> apiResponse = new ApiResponse<>();
-
-    protected ResponseEntity<ApiResponse<Returned>> responseEntity;
     protected final int CONST_TIMEOUT = 500;
-
     private final Security security = Config.getSettings().getServer().getResource().getSecurity();
-
     private final String username = security.getUsername();
-
     private final String password = security.getPassword();
-
+    protected ApiResponse<Returned> apiResponse = new ApiResponse<>();
+    protected ResponseEntity<ApiResponse<Returned>> responseEntity;
     protected String url;
 
-    public DataSender(Object... params){
+    public DataSender(Object... params) {
         this.url = UrlBuilder.build(getCurrentUrl(), params);
     }
 
     abstract public String getCurrentUrl();
 
-    protected RestTemplate buildRestTemplate(int timeout){
+    protected RestTemplate buildRestTemplate(int timeout) {
         HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
         httpRequestFactory.setConnectionRequestTimeout(timeout);
         httpRequestFactory.setConnectTimeout(timeout);
@@ -52,7 +49,7 @@ abstract public class DataSender<Returned> {
         return new RestTemplate(httpRequestFactory);
     }
 
-    protected <Sent> HttpEntity<Sent> buildHttpEntity(Sent data){
+    protected <Sent> HttpEntity<Sent> buildHttpEntity(Sent data) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
@@ -60,12 +57,12 @@ abstract public class DataSender<Returned> {
     }
 
 
-    public ApiResponse<Returned> getApiResponse(){
+    public ApiResponse<Returned> getApiResponse() {
         return apiResponse;
     }
 
 
-    public boolean isSuccessfullyResponse(){
+    public boolean isSuccessfullyResponse() {
         return apiResponse.getHttpStatus().is2xxSuccessful();
     }
 

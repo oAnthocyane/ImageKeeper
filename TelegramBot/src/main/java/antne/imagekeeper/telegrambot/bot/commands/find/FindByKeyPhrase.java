@@ -28,31 +28,29 @@ public class FindByKeyPhrase implements IBotCommand {
 
     @Override
     public void processMessage(AbsSender absSender, Message message, String[] arguments) {
-        if (arguments.length == 0){
+        if (arguments.length == 0) {
             String sendText = CurrentLanguage.getCurrentLanguage().getNotAllArguments();
-            try{
+            try {
                 MessageSender.sendMessage(absSender, message.getChatId(), sendText);
-            }catch (TelegramApiException e){
+            } catch (TelegramApiException e) {
                 throw new RuntimeException(e);
             }
-        }
-        else {
+        } else {
             List<String> keyPhrases = Arrays.stream(arguments).toList();
             Long id = message.getFrom().getId();
             FinderByKeyPhrase finder = new FinderByKeyPhrase(id);
             finder.addRequestParams("keysPhrase", keyPhrases);
             finder.find();
 
-            if(finder.isSuccessfullyResponse()){
+            if (finder.isSuccessfullyResponse()) {
                 List<byte[]> bytePhotos = finder.getApiResponse().getData();
 
                 try {
                     PhotoManagerSender.send(absSender, id, bytePhotos);
-                }catch (TelegramApiException | IOException e) {
+                } catch (TelegramApiException | IOException e) {
                     throw new RuntimeException(e);
                 }
             }
-            else log.error("Error http-status: {}", finder.getApiResponse().getHttpStatus());
         }
     }
 

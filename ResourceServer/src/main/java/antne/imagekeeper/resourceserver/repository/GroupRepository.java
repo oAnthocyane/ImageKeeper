@@ -3,7 +3,6 @@ package antne.imagekeeper.resourceserver.repository;
 import antne.imagekeeper.resourceserver.model.Group;
 import org.springframework.data.repository.CrudRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 /**

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ImageExceptionHandler {
 
     @ExceptionHandler(value = ImageIOException.class)
-    public ResponseEntity<Object> handleImageIOException(ImageIOException imageIOException){
+    public ResponseEntity<Object> handleImageIOException(ImageIOException imageIOException) {
         ImageException imageException = new ImageException(
                 imageIOException.getMessage(),
                 imageIOException.getCause(),

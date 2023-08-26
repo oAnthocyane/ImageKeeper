@@ -5,7 +5,7 @@ import antne.imagekeeper.resourceserver.model.ModelType;
 /**
  * The type Object not found exception.
  */
-public class ObjectNotFoundException extends RuntimeException{
+public class ObjectNotFoundException extends RuntimeException {
 
     private final ModelType type;
 
@@ -15,7 +15,7 @@ public class ObjectNotFoundException extends RuntimeException{
      * @param message the message
      * @param type    the type
      */
-    public ObjectNotFoundException(String message, ModelType type){
+    public ObjectNotFoundException(String message, ModelType type) {
         super(message);
         this.type = type;
     }
@@ -27,7 +27,7 @@ public class ObjectNotFoundException extends RuntimeException{
      * @param cause   the cause
      * @param type    the type
      */
-    public ObjectNotFoundException(String message, Throwable cause, ModelType type){
+    public ObjectNotFoundException(String message, Throwable cause, ModelType type) {
         super(message, cause);
         this.type = type;
     }
