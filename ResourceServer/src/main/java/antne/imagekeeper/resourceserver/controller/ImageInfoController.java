@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-// TODO: doing get keys, get uniqPhrase
 @RestController
 @RequestMapping("/api/image")
 public class ImageInfoController {

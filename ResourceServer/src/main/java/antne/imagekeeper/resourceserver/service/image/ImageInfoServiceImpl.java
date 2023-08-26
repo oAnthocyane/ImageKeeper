@@ -28,7 +28,7 @@ public class ImageInfoServiceImpl implements ImageInfoService{
 
     private final int MAX_PAGE_REQUEST = 7;
 
-        private final Pageable RANGE_CONTENT = PageRequest.of(0, MAX_PAGE_REQUEST);
+    private final Pageable RANGE_CONTENT = PageRequest.of(0, MAX_PAGE_REQUEST);
 
     private final UserService userService;
     private final GroupService groupService;
@@ -61,7 +61,6 @@ public class ImageInfoServiceImpl implements ImageInfoService{
             Group group = groupService.findByName(groupName);
             if(!group.getUsers().contains(user)) throw new ObjectNotFoundException("This group is not found",
                     ModelType.Group);
-            // TODO: exception if in this group exist image for this uniqPhrase
             else groupsForImage.add(group);
         }
 

@@ -48,7 +48,10 @@ public class LeaveGroupCommand implements IBotCommand {
             groupLeaver.refactorGroup();
             if (groupLeaver.isSuccessfullyResponse()) sendText = CurrentLanguage.getCurrentLanguage()
                     .getDone();
-            else sendText = CurrentLanguage.getCurrentLanguage().getGroupNotExist();
+            else{
+                sendText = CurrentLanguage.getCurrentLanguage().getGroupNotExist();
+                System.out.println(groupLeaver.getApiResponse().getHttpStatus());
+            }
         }
 
         try {
