@@ -14,6 +14,8 @@ public class ResourceServerApplication {
      *
      * @param args the input arguments
      */
+
+    // TODO: Doing Spring Admin, git.properties fot info. Deploy project. 460 page - git. ROLE to actuator - 470 page.
     public static void main(String[] args) {
         SpringApplication.run(ResourceServerApplication.class, args);
     }
