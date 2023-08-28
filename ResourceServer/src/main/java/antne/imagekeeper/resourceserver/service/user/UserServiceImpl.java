@@ -40,10 +40,10 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public long save(User user) {
-        log.info("Saving user: {}", user.getUsername());
+        log.info("Saving user: {}", user.getUserId());
         Optional<User> userInDB = userRepository.findByUserId(user.getUserId());
         if (userInDB.isPresent()) {
-            log.error("User already exists: {}", user.getUsername());
+            log.error("User already exists: {}", user.getUserId());
             throw new ObjectExistException("User is exist", ModelType.User);
         }
         return userRepository.save(user).getId();
@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User leaveGroup(User user, Group group) {
-        log.info("Leaving user {} from group: {}", user.getUsername(), group.getName());
+        log.info("Leaving user {} from group: {}", user.getUserId(), group.getName());
         user.removeGroup(group);
         return userRepository.save(user);
     }
@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User joinToGroup(User user, Group group) {
-        log.info("Joining user {} to group: {}", user.getUsername(), group.getName());
+        log.info("Joining user {} to group: {}", user.getUserId(), group.getName());
         user.addGroup(group);
         return userRepository.save(user);
     }

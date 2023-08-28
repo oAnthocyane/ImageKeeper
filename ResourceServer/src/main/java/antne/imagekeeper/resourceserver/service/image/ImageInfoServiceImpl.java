@@ -112,6 +112,8 @@ public class ImageInfoServiceImpl implements ImageInfoService {
 
     @Override
     public List<byte[]> findByUniqPhraseAndGroup(String uniqPhrase, long userId) throws IOException {
+        log.info("User {} find by key uniq phrase: {} in all groups", userId, uniqPhrase);
+
         User user = userService.findByUserId(userId);
         List<Group> groups = user.getGroups();
         Page<String> imagesPath = imageInfoRepository
@@ -122,6 +124,7 @@ public class ImageInfoServiceImpl implements ImageInfoService {
 
     @Override
     public List<byte[]> findByUniqPhraseAndGroup(String uniqPhrase, long userId, List<String> groupNames) throws IOException {
+        log.info("User {} find by key uniq phrase: {} in groups: {}", userId, uniqPhrase, groupNames);
         User user = userService.findByUserId(userId);
 
         List<Group> groups = getSelectedGroups(user, groupNames);
@@ -134,6 +137,8 @@ public class ImageInfoServiceImpl implements ImageInfoService {
 
     @Override
     public List<byte[]> findByKeyPhrasesAndGroup(List<String> keyPhrases, long userId) throws IOException {
+        log.info("User {} find by key phrases: {} in all groups", userId, keyPhrases);
+
         User user = userService.findByUserId(userId);
         List<Group> groups = user.getGroups();
         Page<String> imagePath = imageInfoRepository
@@ -144,6 +149,7 @@ public class ImageInfoServiceImpl implements ImageInfoService {
     @Override
     public List<byte[]> findByKeyPhrasesAndGroup(List<String> keyPhrases, long userId, List<String> groupNames)
             throws IOException {
+        log.info("User: {} find by key phrases: {} in groups: {}", userId, keyPhrases, groupNames);
         User user = userService.findByUserId(userId);
 
         List<Group> selectedGroups = getSelectedGroups(user, groupNames);
@@ -165,13 +171,14 @@ public class ImageInfoServiceImpl implements ImageInfoService {
     }
 
     private List<Group> getSelectedGroups(User user, List<String> groupNames) {
+        log.info("Selected groups: {} for user {}", groupNames, user.getUserId());
         Set<Group> groups = new HashSet<>();
         for (String groupName : groupNames) {
             groups.add(groupService.findByName(groupName));
         }
         Set<Group> userGroups = new HashSet<>(user.getGroups());
         if (!userGroups.containsAll(groups)) {
-            log.error("Selected groups do not exist for user: {}", user.getUsername());
+            log.error("Selected groups do not exist for user: {}", user.getUserId());
             throw new ObjectNotFoundException("This group is not exist for this user", ModelType.Group);
         }
         return groups.stream().toList();

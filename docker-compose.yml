@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  postgres:
+    image: 'postgres:latest'
+    container_name: 'postgres-database'
+    environment:
+      - 'POSTGRES_USER=postgres'
+      - 'POSTGRES_PASSWORD=3.1415926535897'
+      - 'POSTGRES_DB=keeper_image'
+
+  admin:
+    build: ./AdminServer
+    container_name: 'admin-server'
+    ports:
+      - "9090:9090"
+
+  server:
+    build: ./ResourceServer
+    container_name: 'resource-server'
+    ports:
+      - "8080:8080"
+
+  telegrambot:
+    build: ./TelegramBot
+    container_name: 'telegram-bot'
+    ports:
+      - "8000:8000"
+

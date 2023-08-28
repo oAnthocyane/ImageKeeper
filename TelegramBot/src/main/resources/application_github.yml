@@ -1,14 +1,14 @@
 bot:
   auth:
-    username: <username bot>
-    token: <token bot>
+    username: { username bot }
+    token: { token bot }
   info:
     localization:
       ru:
-        infoAboutBot: >- 
+        infoAboutBot: >-
           Привет, я бот Image Keeper!
-        
-        
+          
+          
           С помощью меня вы можете добавлять новые фотографии, прикрепляя к ним ключевые слова.
           После этого можно найти ту же фотографию по этим ключевым словам. 
           Вступайте в группы и сохраняйте фотографии вместе или храните свои личные фотографии,
@@ -22,12 +22,44 @@ bot:
         commandChangeLanguage: "<язык (ru/en)> - сменить язык"
         commandCreateGroup: "<имя группы> <пароль группы> - создать группу"
         commandLeaveGroup: "<имя группы> - выйти из группы"
-        commandJoinGroup: "<имя группы> - присоединиться к группе"
+        commandJoinGroup: "<имя группы> <пароль> - присоединиться к группе"
         commandGetGroups: "- показать все группы, в которых вы находитесь"
-
+        commandAddGroup: >-
+          - добавить изображение, обязательно указать подпись к изображению (сообщение, которое отправляется вместе с изображением):
+          <уникальное имя (не должно повторяться из уже существующих)> -k <ключи по которым можно найти фото
+          (могут быть не уникальными и можно передавать сколько угодно, можно не передавать)> 
+          -g <названия групп(можно передавать сколько угодно, можно не передавать)>.
+        commandFindByUniqPhrase: <уникальная фраза> - поиск изображения по уникальной фразе.
+        commandFindByKeyPhrase: <ключевые фразы (через пробел)> - поиск изображения по ключевым фразам.
+        commandFindByUniqPhraseAndGroups: <уникальная фраза> <названия групп> - поиск изображения по пользователю и выбранным группам.
+        commandFindByUniqPhraseAndAllGroups: <уникальная фраза> - поиск изображения по уникальным фразам пользователю и всем группам.
+        commandFindByKeyPhrasesAndGroups: -k <ключевые фразы> -g <группы> - поиск изображения по ключевым фразам по пользователю и определённым группам.
+        commandFindByKeyPhrasesAndAllGroups: <ключевые фразы> - поиск изображения по ключевым фразам пользователю и всем группам.
+        commandFind: >-
+          <ключевое слово для определённой комманды> <остальные нужные аргументы для комманд, соблюдая их синтаксис>.
+          - команда для упрощенного поиска, где первым параметром нужно указать ключевое слово для команды,
+          после чего указать все те же параметры, что и для нужной команды.
+          
+          Ключевые слова для комманд:
+          
+          -u - findByUniqPhrase
+          
+          -ug - findByUniqPhraseAndGroups
+          
+          -uag - findByUniqPhraseAndAllGroups
+          
+          -k - findByKeyPhrase
+          
+          -kg - findByKeyPhrasesAndGroups
+          
+          -kag - findByKeyPhrasesAndAllGroups
+        commandNotExist: Данной команды не существует.
         changeLanguageSuccessful: Смена языка прошла успешна.
         changeLanguageError: Такого языка не существует.
-
+        onlyOneImageCanAdd: Добавлять изображения можно только по одному.
+        canNotAddImage: >-
+          Невозможно добавить изображение. Возможно, группы в которую вы хотите добавить изображение не существует
+          или данная уникальная фраза уже используется для другого изображения.
         yourGroups: "Ваши группы:"
 
         notAllArguments: >-
@@ -35,13 +67,15 @@ bot:
           Для помощи используйте команду /help.
         greatCreateGroup: Дання группа была создана.
         groupExist: Группа с таким именем уже существует.
-        userNotInGroup: Вы не находитесь в данной группе.
+        groupNotExist: Данной группы не сущетвует.
+        imageNotExist: Данного изображения не существует.
         done: Сделано!
+        image: <изборажение>
       en:
         infoAboutBot: >-
           Hi, I'm the Image Keeper bot!
-        
-        
+          
+          
           With my help you can add new photos by attaching keywords to them. 
           You can then search for the same photo using those keywords. 
           Join groups and save photos together or store your personal photos
@@ -55,12 +89,44 @@ bot:
         commandChangeLanguage: "<language(en/ru)> - change language"
         commandCreateGroup: "<name group> <password group> - create group"
         commandLeaveGroup: "<name group> - leave from group"
-        commandJoinGroup: "<name group> - join to group"
+        commandJoinGroup: "<name group> <password group>- join to group"
         commandGetGroups: "- show all the groups you are in"
-
+        commandAddGroup: >-
+          - add an image, be sure to specify the image caption (the message that is sent with the image):
+          <unique name (must not be repeated from already existing ones)> -k <keys by which the photo can be found
+          (may not be unique and can be sent as many as you want, may not be sent)> 
+          -g <group names (can be shared as much as you like, may not be shared)>.
+        commandFindByUniqPhrase: <uniq phrase> - find image by uniq phrase.
+        commandFindByKeyPhrase: <key phrases (with a space)> - search image by key phrases.
+        commandFindByUniqPhraseAndAllGroups: <unique phrase> - search image by user and all groups.
+        commandFindByUniqPhraseAndGroups: <unique phrase> <group names> - search image by user and selected groups.
+        commandFindByKeyPhrasesAndGroups: -k <keyPhrasesAndGroup> -g <groups> - search image by key phrases by user and specific groups.
+        commandFindByKeyPhrasesAndAllGroups: <keyPhrases> - search image by key phrases for user and all groups.
+        commandFind: >-
+          <keyword for a particular command> <other required arguments for commands, respecting their syntax>.
+          - command for a simplified search, where the first parameter is the keyword for the command,
+          followed by all the same parameters as for the desired command.
+          
+          The keywords for the commands are:
+          
+          -u - findByUniqPhrase
+          
+          -ug - findByUniqPhraseAndGroups
+          
+          -uag - findByUniqPhraseAndAllGroups
+          
+          -k - findByKeyPhrase
+          
+          -kg - findByKeyPhrasesAndGroups
+          
+          -kag - findByKeyPhrasesAndAllGroups
+        commandNotExist: This command does not exist.
         changeLanguageSuccessful: The language change was successful.
         changeLanguageError: There is no such language.
-
+        onlyOneImageCanAdd: You can only add images one at a time.
+        canNotAddImage: >-
+          Unable to add an image. Perhaps the group you want to add the image to does not exist
+          or this unique phrase is already used for another image.
         yourGroups: "Your groups:"
 
         notAllArguments: >-
@@ -68,14 +134,27 @@ bot:
           For help, please use the /help command.
         greatCreateGroup: This group has been created.
         groupExist: A group by that name already exists.
-        userNotInGroup: You are not in this group.
+        groupNotExist: This group is not exist.
+        imageNotExist: Image is not exist.
         done: Done!
+        image: <image>
 server:
   resource:
-    url: http://localhost:8080/api/
+    url: http://server:8080/api/ {url to connect resource server}
     api:
       addUser: users/save
       getGroups: users/{userId}/groups
       addGroup: groups/save/{userId}
       leaveGroup: groups/{groupName}/leave/{userId}
-      joinGroup: groups/{groupName}/join/{userId}
+      joinGroup: groups/{groupName}/{groupPassword}/join/{userId}
+      addImage: image/save
+      findByUniqPhrase: image/user/{userId}/findByUniqPhraseAndUser/{uniqPhrase}
+      findByUniqPhraseAndUserAndAllGroups: image/user/{userId}/findByUniqPhraseAndGroup/{uniqPhrase}
+      findByUniqPhraseAndUserAndGroups: image/user/{userId}/findByUniqPhraseAndGroup/{uniqPhrase}/group
+      findByKeyPhrase: image/user/{userId}/findByKeysPhraseAndUser
+      findByKeyPhrasesAndGroup: image/user/{userId}/findByKeyPhraseAndGroup/group
+      findByKeyPhrasesAndAllGroup: image/user/{userId}/findByKeyPhraseAndGroup
+    security:
+      name: { username to login on server }
+      password: { password to login on server }
+

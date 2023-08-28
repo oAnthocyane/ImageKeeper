@@ -55,7 +55,7 @@ public class GoogleDriveUploader {
 
         File folder = driveService.files().create(folderMetadata).execute();
         String folderId = folder.getId();
-        log.info("Successfully create a new folder with id: {}", folderId);
+        log.info("Successfully create a new folder with name: {} and id: {}", folderName, folderId);
         return folderId;
     }
 

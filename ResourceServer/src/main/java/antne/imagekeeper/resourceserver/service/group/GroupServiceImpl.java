@@ -91,7 +91,7 @@ public class GroupServiceImpl implements GroupService {
      */
     @Override
     public boolean removeUserInGroup(Group group, User user) {
-        log.info("Removing user {} from group: {}", user.getUsername(), group.getName());
+        log.info("Removing user {} from group: {}", user.getUserId(), group.getName());
         group.removeUser(user);
         if (group.getUsers().size() == 0) {
             groupRepository.delete(group);

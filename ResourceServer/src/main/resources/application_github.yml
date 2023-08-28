@@ -1,12 +1,60 @@
 spring:
+  application:
+    name: ImageKeeperServer
+  security:
+    user:
+      name: {username to login on server}
+      password: {password to login on server}
+      roles: ADMIN
+  boot:
+    admin:
+      client:
+        url: http://admin:9090 {url to connect to admin server}
+        username: { username to admin server }
+        password: { password to admin server }
+        instance:
+          metadata:
+            user.name: ${spring.security.user.name}
+            user.password: ${spring.security.user.password}
   sql:
     init:
       mode: always
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: <url to DB>
-    username: <username to DB>
-    password: <password to DB>
+    url: { url to DB }
+    username: { username to DB }
+    password: { password to DB }
   jpa:
     hibernate:
       ddl-auto: update
+
+management:
+  info:
+    env:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+
+google:
+  drive:
+    application-name: Image Control Drive Service
+    credentials-path: { path to credentials }
+  path:
+    parentFolderId: { parent folder id on google disk }
+
+
+info:
+  project:
+    github: https://github.com/oAnthocyane/ImageKeeper
+    telegramBot: https://t.me/ImageKeepBot
+    java-version: ${java.version}
+    java-vendor: ${java.vendor}
+  contact:
+    email: anthocyane@yndex.ru
+    telegram: t.me/Syrnick
+    github: https://github.com/oAnthocyane

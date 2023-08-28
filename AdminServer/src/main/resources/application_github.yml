@@ -1,0 +1,8 @@
+server:
+  port: 9090
+spring:
+  security:
+    user:
+      username: { username to admin server }
+      password: { password to admin server }
+      roles: ADMIN

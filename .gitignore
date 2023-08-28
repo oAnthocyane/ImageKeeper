@@ -1,4 +1,5 @@
 **/application.yml
 **/logs/
 **/credentials.json
-
+**/target/
+**/docker-compose.yml
